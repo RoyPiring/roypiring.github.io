@@ -1643,32 +1643,18 @@ function masteryTracksSection(D){
 
 // ---------- render -------------------------------------------------------
 function render(D){
-  // Live clock: use the viewer's current time, not the frozen fetch time, so the
-  // date and every elapsed-time number (pace, "days ago", staleness) keep moving
-  // forward even when no new system has shipped. The counts stay as of the last
-  // data sync; only the passage of time advances.
+  // Use the viewer's current time (not the frozen fetch time) for elapsed-time
+  // math, so the "Last build" staleness column, the coach pace, and the trajectory
+  // "today" marker keep moving forward on their own even when no new system has
+  // shipped. The counts stay as of the last data sync; only elapsed time advances.
   const now = new Date();
   const goal = D.goal, total = D.reported_total, remaining = goal - total;
   const github = D.github_total;
   G = { dated: (D.systems || []).map(s => s.date).sort(), now, goal, total, analyticsStart: ymd(D.analytics_start), hours: D.hours || null };
 
-  // Live header line: today's date and the running gap since the last system,
-  // both recomputed in the browser so they advance on their own. Repaint each
-  // minute so a tab left open ticks over midnight without a reload.
-  const paintClock = () => {
-    const t = new Date();
-    const dates = (D.systems || []).map(s => s.date).filter(Boolean).sort();
-    const last = dates.length ? dates[dates.length - 1] : null;
-    const gap = last ? Math.max(0, Math.floor((t - ymd(last)) / DAY)) : null;
-    const today = t.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
-    const synced = new Date(D.generated_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-    let s = "Today <b>" + today + "</b>";
-    if (gap !== null) s += ' &middot; <b>' + gap + '</b> day' + (gap === 1 ? "" : "s") + " since the last system shipped";
-    s += ' &middot; <span style="opacity:.6">data synced ' + synced + "</span>";
-    document.getElementById("updated").innerHTML = s;
-  };
-  paintClock();
-  setInterval(paintClock, 60000);
+  // Header shows the last data-sync date (frozen), not a live clock.
+  document.getElementById("updated").innerHTML =
+    "Updated <b>" + new Date(D.generated_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) + "</b>";
 
   const eoy = ymd(D.goal_targets.end_of_year);
   const two = ymd(D.goal_targets.two_year);
