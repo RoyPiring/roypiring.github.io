@@ -1265,12 +1265,20 @@ const root = document.getElementById("root");
 const DAY = 86400000;
 let G = {};   // shared state for tab interactivity
 
+// All date reasoning is anchored to Central time (America/Chicago handles CST/CDT),
+// not the viewer's zone and not UTC, so "days ago" and dates read the same everywhere.
+const CST_TZ = "America/Chicago";
+// The calendar date (YYYY-MM-DD) that a given instant falls on in Central time.
+function cstDate(d){ return new Intl.DateTimeFormat("en-CA", { timeZone: CST_TZ, year: "numeric", month: "2-digit", day: "2-digit" }).format(d); }
+// Whole calendar days from date-string a to date-string b, UTC-anchored so the count is exact and DST never shifts it.
+function dayDiff(a, b){ return Math.round((Date.parse(b.slice(0, 10) + "T00:00:00Z") - Date.parse(a.slice(0, 10) + "T00:00:00Z")) / DAY); }
+
 function fmt(n){ return Math.round(n).toLocaleString("en-US"); }
 function pct(n, d){ return d ? Math.min(100, (n / d) * 100) : 0; }
-function monthYear(d){ return d.toLocaleDateString("en-US", { month: "short", year: "numeric" }); }
-function ymd(s){ return new Date(s + "T00:00:00"); }   // parse YYYY-MM-DD as local, not UTC
-function daysSince(dateStr, now){ return dateStr ? Math.floor((now - new Date(dateStr)) / DAY) : null; }
-function within(dates, now, days){ return dates.filter(d => (now - new Date(d)) <= days * DAY).length; }
+function monthYear(d){ return d.toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: CST_TZ }); }
+function ymd(s){ return new Date(s + "T12:00:00Z"); }   // anchor a bare YYYY-MM-DD at noon UTC so it reads as the same calendar day in CST
+function daysSince(dateStr, now){ return dateStr ? dayDiff(dateStr, cstDate(now)) : null; }   // whole CST calendar days ago
+function within(dates, now, days){ const today = cstDate(now); return dates.filter(d => { const g = dayDiff(d, today); return g >= 0 && g < days; }).length; }
 function weeksBetween(a, b){ return Math.max(0.05, (b - a) / (7 * DAY)); }
 function titleCase(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
 
@@ -1285,12 +1293,12 @@ const RANGES = {
 function buckets(dates, range){
   const m = {};
   dates.forEach(s => {
-    const dt = new Date(s);
+    const c = s.slice(0, 10);   // bare calendar date; group straight off the string so the zone never matters
     let k;
-    if (range === "daily") k = s.slice(0, 10);
-    else if (range === "weekly") k = Math.floor(dt.getTime() / (7 * DAY));
-    else if (range === "monthly") k = dt.getFullYear() + "-" + dt.getMonth();
-    else k = dt.getFullYear();
+    if (range === "daily") k = c;
+    else if (range === "weekly") k = Math.floor(Date.parse(c + "T00:00:00Z") / (7 * DAY));
+    else if (range === "monthly") k = c.slice(0, 7);
+    else k = c.slice(0, 4);
     m[k] = (m[k] || 0) + 1;
   });
   return Object.values(m);
@@ -1319,7 +1327,8 @@ function tabTiles(range){
   const wholeFits = spanDays <= r.unit;
   const cur = within(dated, now, r.unit);
   const built = wholeFits ? total : cur;
-  const prev = dated.filter(d => { const g = (now - new Date(d)) / DAY; return g > r.unit && g <= 2 * r.unit; }).length;
+  const today = cstDate(now);
+  const prev = dated.filter(d => { const g = dayDiff(d, today); return g >= r.unit && g < 2 * r.unit; }).length;
   const delta = cur - prev;
   const avg = total / (spanDays / r.unit);
   const best = Math.max(0, ...buckets(dated, range));
@@ -1398,7 +1407,7 @@ function trajectory(D, now){
 
   // actual cumulative, starting from the pre-tracking baseline
   let actual = `M ${px(minX).toFixed(1)} ${py(baseline).toFixed(1)}`;
-  dated.forEach((d, i) => { actual += ` L ${px(new Date(d).getTime()).toFixed(1)} ${py(baseline + i + 1).toFixed(1)}`; });
+  dated.forEach((d, i) => { actual += ` L ${px(ymd(d).getTime()).toFixed(1)} ${py(baseline + i + 1).toFixed(1)}`; });
   actual += ` L ${px(now.getTime()).toFixed(1)} ${py(total).toFixed(1)}`;
   const area = actual + ` L ${px(now.getTime()).toFixed(1)} ${py(0).toFixed(1)} L ${px(minX).toFixed(1)} ${py(0).toFixed(1)} Z`;
 
@@ -1652,9 +1661,9 @@ function render(D){
   const github = D.github_total;
   G = { dated: (D.systems || []).map(s => s.date).sort(), now, goal, total, analyticsStart: ymd(D.analytics_start), hours: D.hours || null };
 
-  // Header shows the last data-sync date (frozen), not a live clock.
+  // Header shows the last data-sync date (frozen), rendered in Central time.
   document.getElementById("updated").innerHTML =
-    "Updated <b>" + new Date(D.generated_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) + "</b>";
+    "Updated <b>" + new Date(D.generated_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: CST_TZ }) + "</b>";
 
   const eoy = ymd(D.goal_targets.end_of_year);
   const two = ymd(D.goal_targets.two_year);
