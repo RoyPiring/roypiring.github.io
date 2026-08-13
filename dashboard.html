@@ -3,212 +3,618 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My NextWork Journey Dashboard</title>
+<title>My NextWork Training | Building by Learning</title>
 <style>
+  /* ============================================================
+     WABI-SABI DASHBOARD
+     Light: washi paper, sumi ink, kraft ground.
+     Dark:  wet slate, warm paper-white ink.
+     Categorical palette validated (CVD + contrast) in both modes.
+     ============================================================ */
   :root {
-    /* sand ground, granite text, moss accent, dark-green metric bubbles */
-    --bg: #d9cfb8;
-    --panel: #e8dfcb;
-    --panel-2: #e2d8c2;
-    --line: #c9bda0;
-    --text: #2b2d29;
-    --muted: #6f6a5b;
-    --accent: #5f7a4f;
-    --accent-2: #44603a;
-    --good: #4f7a42;
-    --warn: #9c6f2e;
-    --bad: #a14b30;
-    --track: #c7ba9c;
-    --stone: #4b5246;
-    /* dark green bubbles */
-    --bubble1: #36492f;
-    --bubble2: #283621;
-    --bubble-text: #f1f3e7;
-    --bubble-lab: #aebb9d;
-    --bubble-sub: #9fae8e;
-    --bubble-em: #c6dba6;
-    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Times New Roman", serif;
+    color-scheme: light;
+    --bg:        #e9e1d2;
+    --surface:   #f4efe6;
+    --surface-2: #eee7da;
+    --sunk:      #e3dacb;
+    --line:      rgba(58,48,34,0.13);
+    --line-2:    rgba(58,48,34,0.22);
+    --text:      #241f19;
+    --text-2:    #574f43;
+    --muted:     #857c6d;
+    --grid:      rgba(58,48,34,0.09);
+
+    /* categorical, validated on #f4efe6 */
+    --eng:  #5f8f3a;   /* moss    */
+    --nwk:  #7a4f8c;   /* murasaki */
+    --del:  #2f5fa8;   /* ai indigo */
+    --mas:  #b8482a;   /* kaki persimmon */
+    --bnb:  #00897b;   /* seiheki teal */
+    --act:  #a8791a;   /* kincha gold, all-track activity */
+
+    --good:  #3f7a34;
+    --shadow: 0 1px 2px rgba(50,40,25,0.05), 0 12px 28px -20px rgba(50,40,25,0.40);
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+    /* --- procedural stone / washi. Two lit turbulence layers: broad cloudy
+       mottling, then fine grain. Generated, so the published file stays
+       self-contained and a few KB rather than a photo payload. --- */
+    --tex-macro: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='1200'%3E%3Cfilter id='M'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.0055' numOctaves='5' seed='5'/%3E%3CfeDiffuseLighting lighting-color='%23ffffff' surfaceScale='7'%3E%3CfeDistantLight azimuth='118' elevation='50'/%3E%3C/feDiffuseLighting%3E%3CfeGaussianBlur stdDeviation='1.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23M)'/%3E%3C/svg%3E");
+    --tex-micro: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+    --tex-op: 0.26;
+    --tex-blend: multiply;
+    --slab-op: 0.30;
+    --slab-blend: multiply;
   }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg:        #1a1c1d;
+      --surface:   #26282a;
+      --surface-2: #2c2f31;
+      --sunk:      #202223;
+      --line:      rgba(255,255,255,0.10);
+      --line-2:    rgba(255,255,255,0.17);
+      --text:      #ece7dd;
+      --text-2:    #b4ada0;
+      --muted:     #8b8478;
+      --grid:      rgba(255,255,255,0.075);
+      --eng: #729c3d; --nwk: #b478cf; --del: #5f92d8; --mas: #d66b4a; --bnb: #22ab9a; --act: #c99a30;
+      --good: #7bb46a;
+      --shadow: 0 1px 2px rgba(0,0,0,0.35), 0 14px 30px -20px rgba(0,0,0,0.75);
+      --tex-op: 0.52; --tex-blend: soft-light;
+      --slab-op: 0.42; --slab-blend: soft-light;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg:        #1a1c1d;
+    --surface:   #26282a;
+    --surface-2: #2c2f31;
+    --sunk:      #202223;
+    --line:      rgba(255,255,255,0.10);
+    --line-2:    rgba(255,255,255,0.17);
+    --text:      #ece7dd;
+    --text-2:    #b4ada0;
+    --muted:     #8b8478;
+    --grid:      rgba(255,255,255,0.075);
+    --eng: #729c3d; --nwk: #b478cf; --del: #5f92d8; --mas: #d66b4a; --bnb: #22ab9a; --act: #c99a30;
+    --good: #7bb46a;
+    --shadow: 0 1px 2px rgba(0,0,0,0.35), 0 14px 30px -20px rgba(0,0,0,0.75);
+    --tex-op: 0.52; --tex-blend: soft-light;
+    --slab-op: 0.42; --slab-blend: soft-light;
+  }
+
   * { box-sizing: border-box; }
-  .wrap { max-width: 1200px; margin: 0 auto; }
+  html { scroll-behavior: smooth; }
   body {
-    margin: 0;
-    background:
-      radial-gradient(1100px 560px at 84% -14%, rgba(95,122,82,0.16), transparent),
-      radial-gradient(900px 460px at -8% 4%, rgba(120,100,68,0.10), transparent),
-      var(--bg);
-    color: var(--text);
-    font-family: "Segoe UI", -apple-system, system-ui, Roboto, Helvetica, Arial, sans-serif;
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--sans); line-height: 1.55;
     -webkit-font-smoothing: antialiased;
-    padding: 30px clamp(16px, 4vw, 60px) 72px;
-    line-height: 1.5;
+    padding: 0 clamp(16px, 5vw, 56px) 96px;
   }
+  /* stone ground (dark) / washi ground (light). Sits behind all content. */
   body::before {
-    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-    opacity: 0.07; mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: var(--tex-macro), var(--tex-micro);
+    background-size: cover, 240px 240px;
+    background-repeat: no-repeat, repeat;
+    background-position: center center, 0 0;
+    opacity: var(--tex-op); mix-blend-mode: var(--tex-blend);
+  }
+  /* uneven quarry light, so the slab is not evenly lit */
+  body::after {
+    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(1200px 720px at 78% -12%, rgba(255,255,255,0.055), transparent 62%),
+      radial-gradient(900px 600px at 8% 108%, rgba(0,0,0,0.30), transparent 60%);
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; position: relative; z-index: 1; }
+
+  /* ---------- masthead ---------- */
+  .masthead { display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 24px; padding: 40px 0 26px; flex-wrap: wrap; }
+  .mast-l { min-width: 0; flex: 1 1 auto; max-width: calc(100% - 130px); }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(26px, 3.4vw, 38px);
+       margin: 0; letter-spacing: -0.01em; line-height: 1.15; }
+  .tagline { color: var(--text-2); font-size: 14.5px; margin: 8px 0 0; max-width: 88ch; padding-right: 32px; }
+  .stamp { color: var(--muted); font-size: 12px; margin-top: 10px; letter-spacing: 0.04em; }
+
+  .toggle { display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
+    background: var(--surface); color: var(--text-2); border: 1px solid var(--line-2);
+    border-radius: 999px; padding: 8px 15px; font: inherit; font-size: 12.5px; font-weight: 600;
+    letter-spacing: 0.03em; transition: color .16s, border-color .16s, background .16s; flex-shrink: 0; }
+  .toggle:hover { color: var(--text); border-color: var(--text-2); }
+  .toggle svg { width: 15px; height: 15px; }
+  .only-light { display: none; } :root[data-theme="light"] .only-light { display: inline; }
+  @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .only-light { display: inline; } }
+  .only-dark { display: inline; } :root[data-theme="light"] .only-dark { display: none; }
+  @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .only-dark { display: none; } }
+  :root[data-theme="dark"] .only-light { display: none; }
+  :root[data-theme="dark"] .only-dark { display: inline; }
+
+  /* ---------- hero ---------- */
+  /* cut-stone slab surface, shared by hero and blocks */
+  .slab { background-color: var(--surface); background-image: var(--tex-micro);
+    background-size: 240px 240px; background-blend-mode: var(--slab-blend); }
+  .slab::before { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+    background-image: var(--tex-macro); background-size: cover; background-repeat: no-repeat;
+    background-position: center center;
+    opacity: var(--slab-op); mix-blend-mode: var(--slab-blend); }
+  .hero { background: var(--surface); border: 1px solid var(--line); position: relative;
+    border-radius: 4px; padding: 26px clamp(18px, 2.6vw, 30px); box-shadow: var(--shadow);
+    display: grid; grid-template-columns: minmax(0,1.05fr) minmax(0,1fr) minmax(0,0.95fr);
+    gap: 0; align-items: stretch; }
+  .hgroup { padding: 0 clamp(16px,2vw,26px); min-width: 0; }
+  .hgroup:first-child { padding-left: 0; }
+  .hgroup:last-child { padding-right: 0; }
+  .hgroup + .hgroup { border-left: 1px solid var(--line); }
+  @media (max-width: 980px) {
+    .hero { grid-template-columns: 1fr; }
+    .hgroup { padding: 20px 0; }
+    .hgroup + .hgroup { border-left: 0; border-top: 1px solid var(--line); }
+    .hgroup:first-child { padding-top: 0; }
+  }
+  .hero > *, .block > * { position: relative; z-index: 1; }
+  .kicker { font-size: 11px; text-transform: uppercase; letter-spacing: 0.19em;
+    color: var(--muted); font-weight: 700; margin-bottom: 12px; }
+  .hero-fig { font-family: var(--serif); line-height: 0.92; letter-spacing: -0.02em; }
+  .hero-fig .n { font-size: clamp(56px, 9vw, 92px); font-weight: 600; }
+  .hero-fig .d { font-size: clamp(19px, 2.4vw, 26px); color: var(--muted); margin-left: 4px; }
+  .hero-sub { color: var(--text-2); font-size: 13.5px; margin-top: 12px; }
+  .hero-sub b { color: var(--text); font-weight: 650; }
+  .meter { height: 8px; border-radius: 4px; background: var(--sunk); overflow: hidden;
+    display: flex; gap: 2px; margin-top: 20px; border: 1px solid var(--line); }
+  .meter i { display: block; height: 100%; }
+  .meter-key { display: flex; flex-wrap: wrap; gap: 5px 18px; margin-top: 12px; }
+  .mk { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text-2); }
+  .mk .sw { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+  .mk b { color: var(--text); font-weight: 650; font-variant-numeric: tabular-nums; }
+
+  .microrow { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line); border-radius: 3px; overflow: hidden; }
+  .micro { background: var(--surface-2); padding: 14px 14px 13px; display: grid;
+    grid-template-rows: 15px 30px 15px; align-content: start; row-gap: 4px; }
+  .micro .l { font-size: 10px; text-transform: uppercase; letter-spacing: 0.11em;
+    color: var(--muted); font-weight: 700; line-height: 15px; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; }
+  .micro .v { font-size: 25px; font-weight: 600; margin-top: 5px; letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums; }
+  .micro .s { font-size: 10.5px; color: var(--muted); margin-top: 0; line-height: 15px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* ---------- tabs ---------- */
+  .tabsbar { display: flex; gap: 2px; margin: 34px 0 0; border-bottom: 1px solid var(--line-2);
+    overflow-x: auto; scrollbar-width: none; }
+  .tabsbar::-webkit-scrollbar { display: none; }
+  .tab { appearance: none; background: transparent; border: 0; border-bottom: 2px solid transparent;
+    color: var(--muted); font: inherit; font-size: 13.5px; font-weight: 650; letter-spacing: 0.01em;
+    padding: 12px 18px; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 9px;
+    transition: color .16s, border-color .16s; margin-bottom: -1px; }
+  .tab:hover { color: var(--text); }
+  .tab .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: .5; flex-shrink: 0; }
+  .tab[aria-selected="true"] { color: var(--text); }
+  .tab[aria-selected="true"] .dot { opacity: 1; }
+  .tab .ct { font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; font-weight: 600; }
+  .tab:focus-visible { outline: 2px solid var(--text-2); outline-offset: -3px; border-radius: 3px; }
+
+  /* ---------- panels ---------- */
+  .panel { padding-top: 30px; animation: rise .28s ease both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .panel { animation: none; } html { scroll-behavior: auto; } }
+
+  .lede { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 26px;
+    align-items: end; padding-bottom: 22px; border-bottom: 1px solid var(--line); margin-bottom: 26px; }
+  @media (max-width: 700px) { .lede { grid-template-columns: 1fr; align-items: start; gap: 16px; } }
+  .lede h2 { font-family: var(--serif); font-size: clamp(21px,2.6vw,27px); font-weight: 600;
+    margin: 0 0 7px; letter-spacing: -0.01em; }
+  .lede p { margin: 0; color: var(--text-2); font-size: 13.5px; max-width: 62ch; }
+  .lede-fig { text-align: right; font-family: var(--serif); line-height: 1; white-space: nowrap; }
+  @media (max-width: 700px) { .lede-fig { text-align: left; } }
+  .lede-fig .n { font-size: clamp(34px,5vw,46px); font-weight: 600; letter-spacing: -0.02em; }
+  .lede-fig .d { font-size: 15px; color: var(--muted); }
+  .lede-fig .s { font-family: var(--sans); font-size: 11.5px; color: var(--muted);
+    margin-top: 6px; letter-spacing: 0.03em; }
+
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(158px,1fr)); gap: 1px;
+    background: var(--line); border: 1px solid var(--line); border-radius: 3px; overflow: hidden; margin-bottom: 28px; }
+  .tile { background: var(--surface); padding: 17px 18px; }
+  .tile .l { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); font-weight: 700; }
+  .tile .v { font-size: 27px; font-weight: 600; margin-top: 6px; letter-spacing: -0.015em; font-variant-numeric: tabular-nums; }
+  .tile .s { font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+
+  .block { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; position: relative;
+    padding: 24px clamp(18px,2.4vw,26px); box-shadow: var(--shadow); margin-bottom: 20px; }
+  .block > h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--text-2); font-weight: 700; margin: 0 0 4px; }
+  .block > .note { font-size: 12.5px; color: var(--muted); margin: 0 0 18px; max-width: none; }
+
+  /* ---------- bar rows ---------- */
+  .bars { display: flex; flex-direction: column; gap: 3px; }
+  .bar { display: grid; grid-template-columns: minmax(112px, 178px) minmax(0,1fr) auto;
+    gap: 14px; align-items: center; padding: 6px 8px; border-radius: 3px;
+    text-decoration: none; color: inherit; transition: background .14s; }
+  .bar:hover, .bar:focus-visible { background: var(--surface-2); outline: none; }
+  @media (max-width: 620px) { .bar { grid-template-columns: minmax(96px,1fr) auto; }
+    .bar .track { grid-column: 1 / -1; order: 3; } }
+  .bar .nm { font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .bar .nm small { display: block; font-weight: 500; font-size: 11px; color: var(--muted);
+    text-overflow: ellipsis; overflow: hidden; }
+  .track { height: 20px; background: var(--sunk); border-radius: 3px; position: relative; overflow: hidden; }
+  .track i { position: absolute; inset: 0 auto 0 0; border-radius: 2px 3px 3px 2px; min-width: 3px; }
+  .bar .vl { font-size: 13.5px; font-weight: 650; font-variant-numeric: tabular-nums;
+    min-width: 30px; text-align: right; }
+
+  /* ---------- chart ---------- */
+  .chart { width: 100%; height: auto; display: block; overflow: visible; }
+  .chart text { font-family: var(--sans); fill: var(--muted); font-size: 10.5px; }
+  .chart .axis { stroke: var(--line-2); stroke-width: 1; }
+  .chart .grid { stroke: var(--grid); stroke-width: 1; }
+  .chart .lineseries { fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .hovercell { fill: transparent; cursor: crosshair; }
+  .crosshair { stroke: var(--text-2); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0; }
+  .hdot { opacity: 0; }
+  .tip { position: fixed; z-index: 30; pointer-events: none; opacity: 0; transition: opacity .1s;
+    background: var(--surface); color: var(--text); border: 1px solid var(--line-2);
+    border-radius: 4px; padding: 8px 11px; font-size: 12px; box-shadow: var(--shadow); max-width: 240px; }
+  .tip .tt { font-weight: 700; margin-bottom: 3px; }
+  .tip .tv { color: var(--text-2); font-variant-numeric: tabular-nums; }
+
+  /* ---------- table view (a11y: never color-alone) ---------- */
+  details.tableview { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 12px; }
+  details.tableview summary { cursor: pointer; font-size: 12px; color: var(--muted); font-weight: 600; }
+  details.tableview summary:hover { color: var(--text); }
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 12.5px; }
+  th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* ---------- motion ---------- */
+  .meter i, .track i { transform-origin: left center;
+    transition: width 1.15s cubic-bezier(.16,.84,.34,1); }
+  .bar { opacity: 0; transform: translateY(6px);
+    animation: barIn .5s cubic-bezier(.16,.84,.34,1) both; }
+  @keyframes barIn { to { opacity: 1; transform: none; } }
+  .slab-lift { transition: transform .5s cubic-bezier(.16,.84,.34,1), box-shadow .5s; }
+  .slab-lift:hover { transform: translateY(-2px); }
+  .lineseries.draw { stroke-dasharray: var(--len); stroke-dashoffset: var(--len);
+    animation: draw 1.5s cubic-bezier(.3,.7,.35,1) .15s forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .areafill { opacity: 0; animation: fadeIn .9s ease .75s forwards; }
+  @keyframes fadeIn { to { opacity: .13; } }
+  .spark { width: 62px; height: 20px; overflow: visible; flex-shrink: 0; }
+  .spark path { fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; opacity: .75; }
+  .bar .sp { display: none; }
+  @media (min-width: 780px) { .bar { grid-template-columns: minmax(112px,178px) minmax(0,1fr) 62px auto; }
+    .bar .sp { display: block; } }
+  .tabink { position: absolute; bottom: -1px; height: 2px; border-radius: 2px;
+    transition: transform .42s cubic-bezier(.16,.84,.34,1), width .42s cubic-bezier(.16,.84,.34,1), background .3s; }
+  .tabsbar { position: relative; }
+  .num-anim { font-variant-numeric: tabular-nums; }
+  @media (prefers-reduced-motion: reduce) {
+    .meter i, .track i { transition: none; }
+    .bar { animation: none; opacity: 1; transform: none; }
+    .lineseries.draw { animation: none; stroke-dashoffset: 0; }
+    .areafill { animation: none; opacity: .13; }
+    .tabink { transition: none; }
+    .slab-lift { transition: none; }
   }
 
-  header.top { text-align: center; margin-bottom: 28px; }
-  header.top h1 {
-    font-family: var(--serif); font-weight: 600; letter-spacing: 0;
-    font-size: clamp(28px, 4vw, 46px); margin: 0;
-    background: linear-gradient(95deg, var(--text), var(--stone));
-    -webkit-background-clip: text; background-clip: text; color: transparent;
+
+  /* ---------- atmosphere: sumi-e scene behind the content ----------
+     Deliberately faint. Cards are opaque slabs, so this only breathes in the
+     margins and gaps. Two dials: --scene-op and removing the .scene node. */
+  .scene { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .scene svg { position: absolute; display: block; }
+  .scene .sakura { top: -14px; right: -40px; width: min(760px, 62vw); height: auto; opacity: var(--scene-op); }
+  .scene .fuji   { bottom: 0; left: 50%; transform: translateX(-50%); width: max(1500px, 118vw); height: auto; opacity: 1; }
+  .scene .stars  { top: 0; left: 0; width: 100%; height: min(560px, 62vh); opacity: 1; }
+  :root { --scene-op: 0.085; }
+  .fuji, .stars { display: none; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --scene-op: 0.5; }
+    :root:not([data-theme="light"]) .sakura { display: none; }
+    :root:not([data-theme="light"]) .fuji,
+    :root:not([data-theme="light"]) .stars { display: block; }
   }
-  .subtitle { color: var(--accent); font-size: clamp(14px, 1.8vw, 17px); margin: 10px auto 0; max-width: 660px; }
-  .updated { color: var(--muted); font-size: 13px; margin-top: 12px; }
-  .updated b { color: var(--text); font-weight: 600; }
-  .section-label { display: flex; align-items: center; justify-content: center; gap: 14px; color: var(--accent-2); font-size: 14px; text-transform: uppercase; letter-spacing: 0.18em; font-weight: 700; margin: 40px 0 16px; }
-  .section-label::before, .section-label::after { content: ""; height: 2px; width: 46px; border-radius: 2px; }
-  .section-label::before { background: linear-gradient(90deg, transparent, var(--accent)); }
-  .section-label::after { background: linear-gradient(90deg, var(--accent), transparent); }
+  :root[data-theme="dark"] { --scene-op: 0.5; }
+  :root[data-theme="dark"] .sakura { display: none; }
+  :root[data-theme="dark"] .fuji, :root[data-theme="dark"] .stars { display: block; }
+  :root[data-theme="light"] .sakura { display: block; }
+  :root[data-theme="light"] .fuji, :root[data-theme="light"] .stars { display: none; }
 
-  .card {
-    background: linear-gradient(180deg, var(--panel), var(--panel-2));
-    border: 1px solid var(--line); border-radius: 18px; padding: 26px;
-    position: relative; overflow: hidden; margin-bottom: 18px;
-    box-shadow: inset 0 1px 0 rgba(255,252,244,0.5), 0 16px 34px -24px rgba(54,48,34,0.45);
+  .petal { animation: fall linear infinite; transform-origin: center; }
+  @keyframes fall {
+    0%   { transform: translate(0,-30px) rotate(0deg); opacity: 0; }
+    12%  { opacity: 1; }
+    88%  { opacity: 1; }
+    100% { transform: translate(-70px, 620px) rotate(320deg); opacity: 0; }
   }
-  .card h2 {
-    font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em;
-    color: var(--stone); margin: 0 0 18px; font-weight: 700;
-    display: flex; align-items: center; gap: 10px;
+  .shoot { opacity: 0; animation: shootA linear infinite; }
+  @keyframes shootA {
+    0%   { transform: translate(6vw, 4vh); opacity: 0; }
+    3%   { opacity: .85; }
+    11%  { transform: translate(46vw, 34vh); opacity: 0; }
+    100% { transform: translate(46vw, 34vh); opacity: 0; }
   }
-  .card h2::before { content: ""; width: 6px; height: 18px; border-radius: 3px; background: linear-gradient(180deg, var(--accent), var(--accent-2)); }
-  .card-note { color: var(--muted); font-size: 13px; margin: -8px 0 18px; }
-  .card-note b { color: var(--text); font-weight: 600; }
-
-  .grid2 { display: grid; grid-template-columns: 1.3fr 1fr; gap: 18px; }
-  @media (max-width: 860px){ .grid2 { grid-template-columns: 1fr; } }
-
-  /* dark green metric bubble */
-  .bubble {
-    background: linear-gradient(155deg, var(--bubble1), var(--bubble2));
-    border: 1px solid rgba(20,30,18,0.45); border-radius: 16px; padding: 18px 18px;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 14px 26px -22px rgba(0,0,0,0.55);
+  .twinkle { animation: tw ease-in-out infinite alternate; }
+  @keyframes tw { from { opacity: .22; } to { opacity: .95; } }
+  .drift { animation: dr linear infinite; }
+  @keyframes dr { from { transform: translateX(-90px); } to { transform: translateX(90px); } }
+  @media (prefers-reduced-motion: reduce) {
+    .petal, .twinkle, .drift, .shoot { animation: none; }
+    .petal { opacity: .85; } .shoot { opacity: 0; }
   }
-  .bubble .b-lab { font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--bubble-lab); margin-bottom: 12px; font-weight: 600; }
-  .bubble .b-num { font-family: var(--serif); font-size: 38px; font-weight: 600; line-height: 1; color: var(--bubble-text); }
-  .bubble .b-num small { font-size: 16px; color: var(--bubble-sub); }
-  .bubble .b-sub { font-size: 12.5px; color: var(--bubble-sub); margin-top: 9px; }
-  .bubble .b-sub b { color: var(--bubble-em); font-weight: 600; }
-  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
 
-  /* goal hero */
-  .goalnum { font-family: var(--serif); font-weight: 600; line-height: 1; }
-  .goalnum .big { font-size: clamp(54px, 8vw, 82px); }
-  .goalnum .of { font-size: clamp(20px, 3vw, 28px); color: var(--muted); margin-left: 6px; }
-  .togo { color: var(--accent); font-size: 15px; margin-top: 6px; } .togo b { font-weight: 600; }
-  .pbar-wrap { margin: 22px 0 8px; }
-  .pbar { position: relative; height: 22px; border-radius: 11px; background: var(--track); border: 1px solid var(--line); overflow: hidden; }
-  .pbar .fill { height: 100%; border-radius: 11px; background: linear-gradient(90deg, var(--accent-2), var(--accent)); }
-  .ticks { position: relative; height: 18px; margin-top: 7px; }
-  .ticks span { position: absolute; transform: translateX(-50%); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
-  .split { color: var(--muted); font-size: 13px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); } .split b { color: var(--text); font-weight: 600; }
 
-  /* tabs */
-  .tabs { display: inline-flex; flex-wrap: wrap; gap: 6px; background: var(--track); border: 1px solid var(--line); border-radius: 12px; padding: 5px; margin-bottom: 18px; }
-  .tab { border: none; background: transparent; color: var(--muted); font: inherit; font-size: 13px; font-weight: 600; padding: 7px 15px; border-radius: 9px; cursor: pointer; transition: background .15s, color .15s; }
-  .tab:hover:not(.active) { color: var(--text); }
-  .tab.active { background: linear-gradient(155deg, var(--bubble1), var(--bubble2)); color: var(--bubble-text); }
+  /* ---------- totals strip: whole picture, regardless of active tab ---------- */
+  .totals { margin-top: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(148px,1fr)); gap: 1px;
+    background: var(--line); border: 1px solid var(--line); border-radius: 4px;
+    overflow: hidden; }
+  .tot { background: var(--surface); padding: 15px 16px 15px 19px; text-align: left; border: 0;
+    font: inherit; color: inherit; position: relative; transition: background .15s; }
+  button.tot { cursor: pointer; }
+  button.tot:hover { background: var(--sunk); }
+  button.tot:focus-visible { outline: 2px solid var(--text-2); outline-offset: -3px; }
+  .tot .rail { position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
+  .tot .tl { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--muted); font-weight: 700; }
+  .tot .tv { font-size: 25px; font-weight: 600; margin-top: 5px; letter-spacing: -0.015em;
+    font-variant-numeric: tabular-nums; }
+  .tot .ts { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .tot.lead { background: var(--surface-2); }
+  .tot.lead .tv { font-size: 30px; }
 
-  /* coach */
-  .coach { background: linear-gradient(180deg, rgba(95,122,79,0.14), rgba(95,122,79,0.04)), linear-gradient(180deg, var(--panel), var(--panel-2)); border-color: rgba(95,122,79,0.45); }
-  .pill { display: inline-block; margin-bottom: 14px; padding: 4px 12px; border-radius: 999px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
-  .pill.on { background: rgba(79,122,66,0.16); color: var(--good); border: 1px solid rgba(79,122,66,0.45); }
-  .pill.off { background: rgba(156,111,46,0.16); color: var(--warn); border: 1px solid rgba(156,111,46,0.45); }
-  .coach .headline { font-family: var(--serif); font-size: clamp(25px, 3.4vw, 34px); font-weight: 600; line-height: 1.15; margin: 2px 0 8px; }
-  .coach .headline .em { color: var(--accent); }
-  .coach-bullets { list-style: none; padding: 0; margin: 12px 0 0; }
-  .coach-bullets li { position: relative; padding: 10px 0 10px 26px; border-top: 1px solid var(--line); color: var(--text); font-size: 14px; line-height: 1.55; }
-  .coach-bullets li:first-child { border-top: none; }
-  .coach-bullets li::before { content: ""; position: absolute; left: 5px; top: 16px; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
-  .coach-bullets b { color: var(--accent); font-weight: 600; }
-  .coach-bullets .flag { color: var(--warn); }
 
-  /* trajectory */
-  .legend { display: flex; gap: 18px; flex-wrap: wrap; color: var(--muted); font-size: 12.5px; margin: 10px 0 18px; }
-  .legend i { display: inline-block; width: 16px; height: 0; border-top: 3px solid currentColor; margin-right: 7px; vertical-align: 4px; border-radius: 2px; }
-  .takeaway { color: var(--text); font-size: 14.5px; line-height: 1.6; padding-top: 16px; border-top: 1px solid var(--line); margin-top: 16px; } .takeaway b { color: var(--accent); }
+  .mini { height: 3px; border-radius: 2px; background: var(--sunk); overflow: hidden; margin: 9px 0 6px; }
+  .mini i { display: block; height: 100%; border-radius: 2px;
+    transition: width 1.15s cubic-bezier(.16,.84,.34,1); }
+  @media (prefers-reduced-motion: reduce) { .mini i { transition: none; } }
 
-  /* mastery pillars */
-  .why { font-family: var(--serif); font-size: clamp(16px, 2vw, 19px); color: var(--text); margin: -6px 0 18px; line-height: 1.45; }
-  .pillar-group { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin: 6px 0 2px; }
-  .pillar-group:first-child { margin-top: 0; }
-  .pillars-intro { color: var(--muted); font-size: 12px; margin: 4px 0 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
-  .pillars { display: grid; gap: 12px; margin-bottom: 16px; }
-  .pillar { display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: baseline; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
-  .pillar:last-child { border-bottom: none; padding-bottom: 0; }
-  .pillar .pn { font-family: var(--serif); font-weight: 600; color: var(--accent); font-size: 22px; line-height: 1; }
-  .pillar .pt { font-weight: 700; color: var(--text); font-size: 15px; }
-  .pillar .pd { color: var(--muted); font-size: 13px; margin-top: 3px; line-height: 1.5; }
 
-  /* groups */
-  .stackbar { display: flex; height: 26px; border-radius: 13px; overflow: hidden; border: 1px solid var(--line); margin: 2px 0 8px; }
-  .stackbar .seg { display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #f6f1e4; white-space: nowrap; }
-  .seg.a { background: linear-gradient(90deg, var(--accent-2), var(--accent)); }
-  .seg.b { background: linear-gradient(90deg, #5b5346, var(--stone)); }
-  .stack-legend { display: flex; gap: 18px; flex-wrap: wrap; color: var(--muted); font-size: 12.5px; margin: 12px 0 20px; }
-  .stack-legend i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 7px; vertical-align: -1px; }
-  .cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  @media (max-width: 600px){ .cmp { grid-template-columns: 1fr; } }
+  /* ---------- lens rows: every lens runs to 100 ---------- */
+  .lrow { display: grid; grid-template-columns: minmax(150px,1.5fr) minmax(0,2fr) 74px 92px;
+    gap: 14px; align-items: center; padding: 9px 8px; border-radius: 3px;
+    text-decoration: none; color: inherit; border-bottom: 1px solid var(--line);
+    transition: background .14s; }
+  .lrow:last-child { border-bottom: 0; }
+  .lrow:hover, .lrow:focus-visible { background: var(--surface-2); outline: none; }
+  .lrow .nm { font-size: 13.5px; font-weight: 650; }
+  .lrow .nm small { display: block; font-weight: 500; font-size: 11px; color: var(--muted); }
+  .lrow .cnt { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+  .lrow .cnt small { font-size: 11px; color: var(--muted); font-weight: 500; }
+  .lrow .upd { font-size: 11.5px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+  .lrow-head { display: grid; grid-template-columns: minmax(150px,1.5fr) minmax(0,2fr) 74px 92px;
+    gap: 14px; padding: 0 8px 8px; font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.11em; color: var(--muted); font-weight: 700; border-bottom: 1px solid var(--line-2); }
+  .lrow-head .r { text-align: right; }
+  @media (max-width: 700px) {
+    .lrow, .lrow-head { grid-template-columns: minmax(0,1fr) 62px 82px; }
+    .lrow .track, .lrow-head .c2 { display: none; }
+  }
 
-  /* repos table */
-  .repos { overflow-x: auto; }
-  .rgroup-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin: 22px 0 4px; }
-  .rgroup-head.first { margin-top: 4px; }
-  .rgroup-title { font-family: var(--serif); font-size: 19px; font-weight: 600; color: var(--text); }
-  .rgroup-sub { font-size: 12.5px; color: var(--muted); }
-  .rgroup-sub b { color: var(--accent); font-weight: 600; }
-  .rhead, .rrow { display: grid; grid-template-columns: minmax(150px, 1.3fr) minmax(160px, 1.4fr) 1fr 76px 70px 88px; align-items: center; gap: 13px; min-width: 920px; }
-  .rhead { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); padding: 10px 0; border-bottom: 1px solid var(--line); }
-  .rhead .r-r { text-align: right; }
-  .rrow { padding: 13px 0; border-bottom: 1px solid var(--line); }
-  .rname a { color: var(--text); font-weight: 600; font-family: var(--serif); font-size: 15px; }
-  .rrole { font-size: 13px; color: var(--accent); font-weight: 600; }
-  .rbar-track { background: var(--track); border-radius: 7px; height: 14px; overflow: hidden; }
-  .rbar-fill { height: 100%; border-radius: 7px; background: linear-gradient(90deg, var(--accent-2), var(--accent)); }
-  .rcount { text-align: right; font-variant-numeric: tabular-nums; }
-  .rcount b { font-weight: 700; font-size: 16px; } .rcount span { color: var(--muted); }
-  .rhours { text-align: right; font-variant-numeric: tabular-nums; color: var(--accent); font-weight: 700; }
-  .ract { text-align: right; font-size: 12.5px; font-variant-numeric: tabular-nums; }
-  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 7px; }
+  /* ---------- activity heatmap ---------- */
+  .heatwrap { padding-bottom: 4px; }
+  #activity { min-height: 276px; display: flex; flex-direction: column; }
+  #activity .heatwrap { flex: 1 1 auto; display: flex; align-items: center; }
+  .heat { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, 11px);
+    grid-auto-columns: minmax(0,1fr); gap: 3px; width: 100%; }
+  .heat i { width: 100%; height: 11px; border-radius: 2px; background: var(--sunk); display: block; }
+  .heat i[data-n]:hover { outline: 1.5px solid var(--text-2); outline-offset: 1px; }
+  .heatinner { width: 100%; }
+  .heatmonths { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0,1fr); gap: 3px; width: 100%;
+    font-size: 10px; color: var(--muted); margin-bottom: 5px; height: 13px; }
+  .heatmonths span { white-space: nowrap; overflow: visible; }
+  .heatlegend { display: flex; align-items: center; gap: 6px; justify-content: flex-end; flex-wrap: wrap;
+    font-size: 11px; color: var(--muted); margin-top: 10px; }
+  .heatlegend i { width: 11px; height: 11px; border-radius: 2px; display: block; }
 
-  /* mastery tracks */
-  .ladder { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; margin: 2px 0 20px; padding: 13px 16px; background: linear-gradient(180deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: 13px; }
-  .ladder .rank { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); }
-  .ladder .rank.here { color: var(--bubble-text); background: linear-gradient(155deg, var(--bubble1), var(--bubble2)); padding: 4px 12px; border-radius: 999px; box-shadow: 0 8px 18px -14px rgba(0,0,0,0.6); }
-  .ladder .arw { color: var(--accent); font-size: 12px; }
-  .mtrack { display: grid; grid-template-columns: minmax(180px, 1.7fr) minmax(130px, 1fr) 132px 92px; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); min-width: 640px; }
-  .mtrack:last-child { border-bottom: none; }
-  .mname a { color: var(--text); font-weight: 600; font-family: var(--serif); font-size: 15px; text-decoration: none; }
-  .mname a:hover { color: var(--accent-2); text-decoration: underline; }
-  .mfocus { font-size: 13px; color: var(--accent); font-weight: 600; }
-  .mstage .chip { display: inline-block; padding: 4px 13px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; background: rgba(95,122,79,0.16); color: var(--accent-2); border: 1px solid rgba(95,122,79,0.42); }
-  .mcount { text-align: right; font-variant-numeric: tabular-nums; }
-  .mcount b { font-weight: 700; font-size: 16px; color: var(--text); } .mcount span { color: var(--muted); font-size: 13px; }
 
-  .axis { fill: var(--muted); font-size: 11px; }
-  .footer { color: var(--muted); font-size: 12.5px; margin-top: 28px; line-height: 1.8; }
-  code { background: var(--panel-2); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; font-size: 12px; }
-  .empty { color: var(--warn); font-size: 13px; }
+  /* ---------- aurora: slow colour washes drifting behind the stone ---------- */
+  .aura { position: fixed; inset: -25%; z-index: 0; pointer-events: none;
+    filter: blur(70px); opacity: var(--aura-op); }
+  .aura b { position: absolute; display: block; border-radius: 50%;
+    width: 46vw; height: 46vw; min-width: 420px; min-height: 420px; }
+  .aura .a1 { left: -6%;  top: -8%;  background: radial-gradient(circle, var(--aura-1), transparent 68%);
+    animation: drift1 54s ease-in-out infinite alternate; }
+  .aura .a2 { right: -10%; top: 18%;  background: radial-gradient(circle, var(--aura-2), transparent 68%);
+    animation: drift2 71s ease-in-out infinite alternate; }
+  .aura .a3 { left: 26%;  bottom: -18%; background: radial-gradient(circle, var(--aura-3), transparent 68%);
+    animation: drift3 63s ease-in-out infinite alternate; }
+  @keyframes drift1 { from { transform: translate3d(0,0,0) scale(1); }
+                      to   { transform: translate3d(9vw, 7vh, 0) scale(1.18); } }
+  @keyframes drift2 { from { transform: translate3d(0,0,0) scale(1.1); }
+                      to   { transform: translate3d(-11vw, 12vh, 0) scale(0.92); } }
+  @keyframes drift3 { from { transform: translate3d(0,0,0) scale(0.95); }
+                      to   { transform: translate3d(12vw, -14vh, 0) scale(1.28); } }
+  .aura .a4 { right: 14%; bottom: -6%; background: radial-gradient(circle, var(--aura-4), transparent 66%);
+    animation: drift4 47s ease-in-out infinite alternate; }
+  .aura .a5 { left: 40%; top: -14%; background: radial-gradient(circle, var(--aura-5), transparent 70%);
+    animation: drift5 83s ease-in-out infinite alternate; }
+  @keyframes drift4 { from { transform: translate3d(0,0,0) scale(1.05); }
+                      to   { transform: translate3d(-14vw, -9vh, 0) scale(0.85); } }
+  @keyframes drift5 { from { transform: translate3d(0,0,0) scale(0.9); }
+                      to   { transform: translate3d(10vw, 16vh, 0) scale(1.3); } }
+  :root { --aura-op: 0.42; --aura-1: rgba(95,143,58,0.30); --aura-2: rgba(168,121,26,0.24);
+          --aura-3: rgba(47,95,168,0.18); --aura-4: rgba(184,72,42,0.16); --aura-5: rgba(0,137,123,0.16); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --aura-op: 0.55; --aura-1: rgba(114,156,61,0.26); --aura-2: rgba(34,171,154,0.20);
+    --aura-3: rgba(95,146,216,0.20); --aura-4: rgba(214,107,74,0.16); --aura-5: rgba(180,120,207,0.16); } }
+  :root[data-theme="dark"] { --aura-op: 0.55; --aura-1: rgba(114,156,61,0.26);
+    --aura-2: rgba(34,171,154,0.20); --aura-3: rgba(95,146,216,0.20);
+    --aura-4: rgba(214,107,74,0.16); --aura-5: rgba(180,120,207,0.16); }
+
+  /* parallax: layers move at different rates so the ground has depth */
+  .scene .sakura { transform: translateY(calc(var(--par, 0) * -0.055px)); }
+  .scene .fuji   { transform: translateX(-50%) translateY(calc(var(--par, 0) * -0.018px)); }
+  .scene .stars  { transform: translateY(calc(var(--par, 0) * -0.10px)); }
+  .aura          { will-change: transform; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .aura b { animation: none; }
+    .scene .sakura, .scene .stars { transform: none; }
+    .scene .fuji { transform: translateX(-50%); }
+  }
+
+
+  .st { display: inline-block; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums;
+    padding: 2px 8px; border-radius: 3px; line-height: 1.35; }
+  .st-fresh { color: #2f6f2a; background: rgba(63,122,52,0.14); }
+  .st-aging { color: #8a5a12; background: rgba(168,121,26,0.16); }
+  .st-stale { color: #9d3d22; background: rgba(184,72,42,0.15); }
+  .st-none  { color: var(--muted); background: var(--sunk); font-weight: 600; font-size: 11.5px; }
+  :root[data-theme="dark"] .st-fresh { color: #93c78a; background: rgba(114,156,61,0.20); }
+  :root[data-theme="dark"] .st-aging { color: #dcb45e; background: rgba(201,154,48,0.20); }
+  :root[data-theme="dark"] .st-stale { color: #e89877; background: rgba(214,107,74,0.20); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .st-fresh { color: #93c78a; background: rgba(114,156,61,0.20); }
+    :root:not([data-theme="light"]) .st-aging { color: #dcb45e; background: rgba(201,154,48,0.20); }
+    :root:not([data-theme="light"]) .st-stale { color: #e89877; background: rgba(214,107,74,0.20); }
+  }
+  .stl { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--muted); margin-top: 3px; font-weight: 700; }
+  .lrow .upd { text-align: right; }
+
+
+  /* ---------- work queue: what to build next, by how long it has sat ---------- */
+  .queue h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--text-2); font-weight: 700; margin: 0 0 4px; }
+  .queue .note { font-size: 12.5px; color: var(--muted); margin: 0 0 16px; }
+  .qlist { display: grid; gap: 0; max-height: 232px; overflow-y: auto; overscroll-behavior: contain;
+    scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; padding-right: 4px; }
+  .qlist::-webkit-scrollbar { width: 8px; }
+  .qlist::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+  .qlist::-webkit-scrollbar-track { background: transparent; }
+  .qrow { display: grid; grid-template-columns: 22px minmax(0,1fr) 52px; gap: 9px;
+    align-items: center; padding: 6px 4px; border-radius: 3px; text-decoration: none; color: inherit;
+    border-bottom: 1px solid var(--line); transition: background .14s; }
+  .qrow:last-child { border-bottom: 0; }
+  .qrow:hover { background: var(--surface-2); }
+  .qrow .rank { font-family: var(--serif); font-size: 15px; font-weight: 600; color: var(--muted);
+    text-align: center; font-variant-numeric: tabular-nums; }
+  .qrow.top .rank { color: var(--text); }
+  .qrow .qn { font-size: 12.5px; font-weight: 650; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .qrow .qn small { display: block; font-size: 10px; font-weight: 500; color: var(--muted);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .qrow .qd { text-align: right; }
+  .qrow.top { background: var(--surface-2); }
+  .qrow .st { font-size: 11.5px; padding: 1px 6px; }
+  @media (prefers-reduced-motion: reduce) { .qrow .qbar i { transition: none; } }
+
+
+  /* ---------- hero proportions ----------
+     Each group is a flex column so its content distributes across the shared
+     height instead of stacking at the top and leaving dead space underneath.
+     The queue takes the leftover room, which is what makes all three bottom out
+     together regardless of how many rows there are. */
+  .hero { align-items: stretch; }
+  .hgroup { display: flex; flex-direction: column; justify-content: flex-start; }
+  .hgroup > .kicker { flex: 0 0 auto; }
+  .hgroup .meter-key { margin-top: 0; padding-top: 0; }
+  .hgroup .qlist { flex: 0 0 auto; height: 276px; max-height: 276px; }
+  .hgroup .microrow { flex: 0 0 auto; }
+  .hgroup .chart { margin-top: 6px; width: 100%; }
+  .chartwrap { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: flex-end; }
+  .queue .note { margin-bottom: 9px; min-height: 17px; font-size: 11.5px; line-height: 1.45; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* tighter vertical rhythm in the progress group */
+  .hero-fig { margin-top: 2px; }
+  .hero-sub { margin-top: 6px; }
+  .meter { margin-top: 12px; height: 10px; }
+  .meter-key { gap: 4px 14px; }
+  .mk { font-size: 11.5px; }
+
+  /* ---------- totals strip: even, calmer tiles ---------- */
+  .totals { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+  .tot { padding: 14px 15px 14px 18px; display: flex; flex-direction: column;
+    justify-content: flex-start; min-height: 104px; }
+  .tot .tl { line-height: 1.3; }
+  .tot .tv { margin-top: 4px; line-height: 1.05; }
+  .tot .mini { margin: 8px 0 5px; }
+  .tot .ts { margin-top: auto; line-height: 1.35; }
+  .tot.lead .tv { font-size: 28px; }
+
+  /* the queue rows sit closer together so more fits without scrolling */
+  .qrow { padding: 5px 4px; }
+  .qtabs { display: flex; gap: 2px; background: var(--sunk); border: 1px solid var(--line);
+    border-radius: 7px; padding: 3px; margin: 0 0 10px; }
+  .qtab { flex: 1 1 0; min-width: 0; appearance: none; background: transparent; border: 0;
+    font: inherit; font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--muted); padding: 5px 4px; border-radius: 5px;
+    cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    transition: background .15s, color .15s; }
+  .qtab:hover:not(.on) { color: var(--text); }
+  .qtab.on { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgba(0,0,0,0.10); }
+  .qtab:focus-visible { outline: 2px solid var(--text-2); outline-offset: -2px; }
+  .qempty { color: var(--muted); font-size: 12px; font-style: italic; padding: 14px 2px; }
+  .qrow .qn small { margin-top: 1px; }
+
+  .mgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px,1fr)); gap: 18px; }
+  .mgrid .block { margin-bottom: 0; }
+  .mgrid .lrow { padding: 7px 6px; }
+  .mgrid .lrow .nm { font-size: 12.5px; }
+  .mgrid .lrow .nm small { font-size: 10px; }
+  .mgrid .block > .note { margin-bottom: 14px; }
+
+  .totals .tot { background: var(--surface); }
+  .totals .tot.lead { background: var(--surface-2); }
+  .totals button.tot:hover { background: var(--surface-2); }
+
+  .scen { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line);
+    border-radius: 3px; overflow: hidden; }
+  .scen-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+    background: var(--surface-2); padding: 7px 10px; }
+  .scen-l { font-size: 11.5px; color: var(--text-2); white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis; }
+  .scen-r { font-size: 12.5px; font-weight: 700; font-variant-numeric: tabular-nums;
+    white-space: nowrap; }
+
+  .foot { margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line);
+    color: var(--muted); font-size: 12px; display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+  .foot a { color: var(--text-2); }
+  .empty { color: var(--muted); font-size: 13px; font-style: italic; padding: 6px 2px; }
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <header class="top">
-      <h1>My NextWork Journey Dashboard</h1>
-      <div class="subtitle">Engineering toward 1,000 AI systems, one build at a time.</div>
-      <div class="updated" id="updated"></div>
-    </header>
-    <div id="root"></div>
+<div class="aura" aria-hidden="true"><b class="a1"></b><b class="a2"></b><b class="a3"></b><b class="a4"></b><b class="a5"></b></div>
+<div class="scene" id="scene" aria-hidden="true"></div>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="mast-l">
+      <h1>My NextWork Training</h1>
+      <p class="tagline">Building by learning. Every system here is one I designed, built, and shipped to a public repo. The counts, dates, and hours are read straight from GitHub, so this is the record itself rather than a claim about it.</p>
+      <div class="stamp" id="stamp"></div>
+    </div>
+    <button class="toggle" id="themeBtn" type="button" aria-label="Switch colour theme">
+      <svg class="only-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
+      <svg class="only-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
+      <span class="only-dark">Light</span><span class="only-light">Dark</span>
+    </button>
+  </header>
+
+  <section class="hero" id="hero"></section>
+
+  <section class="block slab slab-lift" id="activity" style="margin-top:18px"></section>
+
+  <div class="tabsbar" role="tablist" id="tabs"></div>
+
+  <section class="totals" id="totals"></section>
+  <div id="panel"></div>
+
+  <div class="foot">
+    <span>Every number on this page is read from the public repos. Nothing here is hand-entered.</span>
+    <span><a href="https://github.com/RoyPiring">github.com/RoyPiring</a></span>
   </div>
+</div>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
 
 <script>
 // Auto-generated by fetch_data.py. Do not edit by hand.
 window.DASHBOARD_DATA = {
-  "generated_at": "2026-08-12T13:58:25Z",
+  "generated_at": "2026-08-13T04:16:40Z",
   "owner": "RoyPiring",
   "goal": 1000,
   "repo_target": 100,
@@ -231,11 +637,11 @@ window.DASHBOARD_DATA = {
     "generator_total": 157.9,
     "generator_projects": 62,
     "generator_logged_count": 58,
-    "catalog_hours": 185.2,
+    "catalog_hours": 186.3,
     "catalog_projects": 112,
     "catalog_logged_count": 45,
-    "full_total": 343.1,
-    "avg": 1.96,
+    "full_total": 344.2,
+    "avg": 1.98,
     "projects": 174,
     "mastery_goal": 10000,
     "why": "Becoming a principal-level engineer, advisor, and leader, and building a public body of work that holds under real constraints and helps others build the same.",
@@ -1265,6 +1671,7 @@ window.DASHBOARD_DATA = {
         "focus": "Aging & geroscience",
         "onboarded": 1,
         "target": 100,
+        "last_added": "2026-08-02",
         "url": "https://github.com/RoyPiring/mastery-aging"
       },
       {
@@ -1274,6 +1681,7 @@ window.DASHBOARD_DATA = {
         "focus": "Human movement",
         "onboarded": 0,
         "target": 100,
+        "last_added": null,
         "url": "https://github.com/RoyPiring/mastery-kinesiology"
       },
       {
@@ -1283,6 +1691,7 @@ window.DASHBOARD_DATA = {
         "focus": "Brain & NeuroAI",
         "onboarded": 0,
         "target": 100,
+        "last_added": null,
         "url": "https://github.com/RoyPiring/mastery-neuroscience"
       },
       {
@@ -1292,6 +1701,7 @@ window.DASHBOARD_DATA = {
         "focus": "Design & fabrication",
         "onboarded": 0,
         "target": 100,
+        "last_added": null,
         "url": "https://github.com/RoyPiring/mastery-architecture"
       },
       {
@@ -1301,6 +1711,7 @@ window.DASHBOARD_DATA = {
         "focus": "Development & underwriting",
         "onboarded": 3,
         "target": 100,
+        "last_added": "2026-08-02",
         "url": "https://github.com/RoyPiring/mastery-real-estate-development"
       },
       {
@@ -1310,6 +1721,7 @@ window.DASHBOARD_DATA = {
         "focus": "Quant & risk",
         "onboarded": 0,
         "target": 100,
+        "last_added": null,
         "url": "https://github.com/RoyPiring/mastery-finance"
       }
     ],
@@ -1322,528 +1734,926 @@ window.DASHBOARD_DATA = {
     "focus": "A free weekly live cohort. One real AI project built together each week, toward the high-performing solutions engineer across twelve roles.",
     "onboarded": 2,
     "target": 100,
+    "last_added": "2026-08-07",
     "url": "https://github.com/RoyPiring/build-and-brew-ai-dojo"
   }
 };
 
 </script>
 <script>
-const D = window.DASHBOARD_DATA;
-const root = document.getElementById("root");
-const DAY = 86400000;
-let G = {};   // shared state for tab interactivity
+(function () {
+  "use strict";
+  var D = window.DASHBOARD_DATA || {};
+  var $ = function (s) { return document.querySelector(s); };
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+    return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]; }); };
+  var n = function (v) { return (v == null || isNaN(v)) ? "0" : Number(v).toLocaleString("en-US"); };
+  var fmtDate = function (iso) {
+    if (!iso) return "";
+    var d = new Date(iso + (iso.length === 10 ? "T00:00:00Z" : ""));
+    if (isNaN(d)) return iso;
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+  };
 
-// All date reasoning is anchored to Central time (America/Chicago handles CST/CDT),
-// not the viewer's zone and not UTC, so "days ago" and dates read the same everywhere.
-const CST_TZ = "America/Chicago";
-// The calendar date (YYYY-MM-DD) that a given instant falls on in Central time.
-function cstDate(d){ return new Intl.DateTimeFormat("en-CA", { timeZone: CST_TZ, year: "numeric", month: "2-digit", day: "2-digit" }).format(d); }
-// Whole calendar days from date-string a to date-string b, UTC-anchored so the count is exact and DST never shifts it.
-function dayDiff(a, b){ return Math.round((Date.parse(b.slice(0, 10) + "T00:00:00Z") - Date.parse(a.slice(0, 10) + "T00:00:00Z")) / DAY); }
-
-function fmt(n){ return Math.round(n).toLocaleString("en-US"); }
-function pct(n, d){ return d ? Math.min(100, (n / d) * 100) : 0; }
-function monthYear(d){ return d.toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: CST_TZ }); }
-function ymd(s){ return new Date(s + "T12:00:00Z"); }   // anchor a bare YYYY-MM-DD at noon UTC so it reads as the same calendar day in CST
-function daysSince(dateStr, now){ return dateStr ? dayDiff(dateStr, cstDate(now)) : null; }   // whole CST calendar days ago
-function within(dates, now, days){ const today = cstDate(now); return dates.filter(d => { const g = dayDiff(d, today); return g >= 0 && g < days; }).length; }
-function weeksBetween(a, b){ return Math.max(0.05, (b - a) / (7 * DAY)); }
-function titleCase(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
-
-// ---------- key metrics by time range -------------------------------------
-const RANGES = {
-  daily:   { unit: 1,   uname: "day",   wlabel: "today" },
-  weekly:  { unit: 7,   uname: "week",  wlabel: "last 7 days" },
-  monthly: { unit: 30,  uname: "month", wlabel: "last 30 days" },
-  yearly:  { unit: 365, uname: "year",  wlabel: "last 12 months" },
-};
-
-function buckets(dates, range){
-  const m = {};
-  dates.forEach(s => {
-    const c = s.slice(0, 10);   // bare calendar date; group straight off the string so the zone never matters
-    let k;
-    if (range === "daily") k = c;
-    else if (range === "weekly") k = Math.floor(Date.parse(c + "T00:00:00Z") / (7 * DAY));
-    else if (range === "monthly") k = c.slice(0, 7);
-    else k = c.slice(0, 4);
-    m[k] = (m[k] || 0) + 1;
+  /* ---------------- theme ---------------- */
+  var KEY = "pe-theme";
+  try { var saved = localStorage.getItem(KEY); document.documentElement.setAttribute("data-theme", saved || "dark"); } catch (e) { document.documentElement.setAttribute("data-theme", "dark"); }
+  $("#themeBtn").addEventListener("click", function () {
+    var cur = document.documentElement.getAttribute("data-theme");
+    if (!cur) cur = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    var next = cur === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try { localStorage.setItem(KEY, next); } catch (e) {}
+    render();
   });
-  return Object.values(m);
-}
+  var cssv = function (name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); };
 
-function bubble(lab, num, sub){
-  return `<div class="bubble"><div class="b-lab">${lab}</div><div class="b-num">${num}</div><div class="b-sub">${sub}</div></div>`;
-}
+  /* ---------------- model ---------------- */
+  var repos = (D.repos || []);
+  var eng = repos.filter(function (r) { return r.area === "engineering"; });
+  var del = repos.filter(function (r) { return r.area === "delivery"; });
+  var cross = repos.filter(function (r) { return r.area === "cross"; });
+  var sum = function (a, k) { return a.reduce(function (s, r) { return s + (r[k] || 0); }, 0); };
 
-function tabTiles(range){
-  const { dated, now, total, goal, analyticsStart } = G;
-  const spanDays = Math.max(1, (now - analyticsStart) / DAY);
-  const since = "since " + monthYear(analyticsStart);
+  var mastery = (D.mastery || {});
+  var mTracks = mastery.tracks || [];
+  var bnb = D.build_and_brew || {};
 
-  if (range === "all"){
-    const wk = buckets(dated, "weekly");
-    return bubble("Systems built, all-time", `${fmt(total)}<small> / ${fmt(goal)}</small>`, `<b>${pct(total,goal).toFixed(1)}%</b> of the goal`)
-      + bubble("Avg systems per week", (total / (spanDays / 7)).toFixed(1), since)
-      + bubble("Most in a week", Math.max(0, ...wk), "peak systems published in one week")
-      + bubble("Systems remaining", fmt(goal - total), "to reach the 1,000 goal")
-      + (G.hours ? bubble("Project generator hours", G.hours.generator_total + "<small> h</small>", `full ${G.hours.full_total} h incl catalog`) : "");
+  var catalogTotal = D.catalog_total || 0;              // 112 verified curriculum docs
+  var engShipped = sum(eng, "count");
+  var delShipped = sum(del, "count");
+  var masShipped = mastery.total_onboarded || 0;
+  var bnbShipped = bnb.onboarded || 0;
+  var engTotal = engShipped + catalogTotal;             // engineering incl. cross-domain catalog
+  var GOAL = D.goal || 1000;
+  var reported = D.reported_total || (engTotal + delShipped);
+
+  var MASTERY_ROLES = {"mastery-aging": "Longevity Research Engineer", "mastery-kinesiology": "Movement Systems Engineer", "mastery-neuroscience": "Computational Neuroscientist", "mastery-architecture": "Computational Design Engineer", "mastery-real-estate-development": "Development Underwriting Engineer", "mastery-finance": "Quantitative Risk Engineer"};
+  var PER_LENS = 100;   // every lens and every mastery track runs to 100 builds
+  var HRS = D.hours || {};
+  function trackHours(id) {
+    if (id === "engineering") return sum(eng, "hours");
+    if (id === "delivery") return sum(del, "hours");
+    if (id === "nextwork") return HRS.catalog_hours || sum(cross, "hours");
+    return 0;                      // mastery and dojo do not log hours yet
+  }
+  var TRACKS = [
+    { id: "total", label: "Total", cvar: "--text-2", counts: null,
+      count: engShipped + delShipped + catalogTotal + masShipped + bnbShipped,
+      target: GOAL,
+      blurb: "Five tracks, one running total. Each lens and each mastery field runs to 100 builds, and every hour is logged as it happens.",
+      repos: [] },
+    { id: "engineering", short: "Cloud, agentic, governance, federal, and civic systems. The build side of the craft.", label: "Engineering", cvar: "--eng", count: engShipped, counts: true, target: eng.length * PER_LENS,
+      blurb: "The ten original lenses on the build side: cloud, agentic, governance, government, and population-scale systems. Every system here is my own work, and each lens answers one question no other lens answers.",
+      repos: eng },
+    { id: "delivery", short: "How the engineering reaches people: client work, founder operations, and leadership practice.", label: "Delivery", cvar: "--del", count: delShipped, counts: true, target: del.length * PER_LENS,
+      blurb: "How the engineering reaches people: client engagements, founder operations, leadership frameworks, and the playbooks that make delivery repeatable.",
+      repos: del },
+    { id: "mastery", short: "Six fields I chose to go deep in, each a run at 100 hands-on builds.", label: "Mastery", cvar: "--mas", count: masShipped, counts: true, target: (mastery.total_target || mTracks.length * PER_LENS),
+      blurb: "Self-directed runs at six fields, each toward 100 hands-on builds. Framed honestly as a route to command, not a credential.",
+      repos: [] },
+    { id: "dojo", short: "A free weekly cohort I lead. One real project built live with the room each week.", label: "Build & Brew", cvar: "--bnb", count: bnbShipped, counts: true, target: (bnb.target || PER_LENS),
+      blurb: "The free weekly NextWork live cohort. One real AI project built together each week, in the open, finished or not.",
+      repos: [] },
+    { id: "nextwork", short: "The verified NextWork curriculum, worked end to end across cloud, AI, security, and data.", label: "NextWork", cvar: "--nwk", count: catalogTotal, counts: true, target: (D.repo_target || PER_LENS),
+      blurb: "The verified NextWork curriculum, built end to end across cloud, AI, security, data, and platform. Separate from my original lenses: this is a published catalog I worked through, not work I authored.",
+      repos: cross }
+  ]; /* cumulative publish timeline from every repo's date list */
+  var allDates = [];
+  repos.forEach(function (r) { (r.dates || []).forEach(function (d) { allDates.push(d); }); });
+  allDates.sort();
+  var series = [];
+  (function () {
+    var c = 0, i;
+    for (i = 0; i < allDates.length; i++) {
+      c++;
+      if (i === allDates.length - 1 || allDates[i + 1] !== allDates[i]) series.push({ d: allDates[i], v: c });
+    }
+  })();
+
+  /* ---------------- motion helpers ---------------- */
+  var REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* Motion is decoration, never the source of truth: the real value is written
+     first, then replayed as animation only if the page is actually visible.
+     requestAnimationFrame does not fire on a hidden/background tab, so without
+     this a visitor who opens the link in a background tab would see zeros. */
+  function onVisible(fn) {
+    if (!document.hidden) { fn(); return; }
+    var h = function () {
+      if (!document.hidden) { document.removeEventListener("visibilitychange", h); fn(); }
+    };
+    document.addEventListener("visibilitychange", h);
+  }
+  function countUp(el, to, dur) {
+    el.textContent = n(to);                                  // truth first
+    if (REDUCED || to < 2) return;
+    onVisible(function () {
+      var t0 = null;
+      function step(ts) {
+        if (t0 === null) t0 = ts;
+        var p = Math.min(1, (ts - t0) / (dur || 950));
+        var e = 1 - Math.pow(1 - p, 3);                       // easeOutCubic
+        el.textContent = n(Math.round(to * e));
+        if (p < 1) requestAnimationFrame(step);
+      }
+      el.textContent = "0";
+      requestAnimationFrame(step);
+    });
+  }
+  function runCounters(root) {
+    root.querySelectorAll("[data-count]").forEach(function (el) {
+      countUp(el, +el.dataset.count, +el.dataset.dur || 950);
+    });
+  }
+  /* bars/meters settle at their true width, then replay the fill when visible */
+  function growFills(root) {
+    var fills = [].slice.call(root.querySelectorAll("[data-w]"));
+    fills.forEach(function (el) { el.style.width = el.dataset.w + "%"; });   // truth first
+    if (REDUCED || !fills.length) return;
+    onVisible(function () {
+      fills.forEach(function (el) { el.style.transition = "none"; el.style.width = "0%"; });
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          fills.forEach(function (el) { el.style.transition = ""; el.style.width = el.dataset.w + "%"; });
+        });
+      });
+    });
+  }
+  function stagger(root) {
+    root.querySelectorAll(".bar").forEach(function (el, i) {
+      el.style.animationDelay = (REDUCED ? 0 : Math.min(i * 55, 500)) + "ms";
+    });
+  }
+  /* tiny cadence sparkline from a repo's publish dates */
+  function sparkline(dates, color) {
+    if (!dates || dates.length < 2) return '<span class="sp"></span>';
+    var buckets = {}, i;
+    dates.forEach(function (d) { var k = d.slice(0, 7); buckets[k] = (buckets[k] || 0) + 1; });
+    var keys = Object.keys(buckets).sort();
+    if (keys.length < 2) return '<span class="sp"></span>';
+    var vals = keys.map(function (k) { return buckets[k]; });
+    var max = Math.max.apply(null, vals) || 1;
+    var W = 62, H = 20;
+    var pts = vals.map(function (v, j) {
+      return ((j / (vals.length - 1)) * (W - 2) + 1).toFixed(1) + "," +
+             (H - 2 - (v / max) * (H - 5)).toFixed(1);
+    });
+    return '<svg class="spark sp" viewBox="0 0 ' + W + ' ' + H + '" aria-hidden="true">' +
+      '<path d="M' + pts.join("L") + '" stroke="' + color + '"/></svg>';
   }
 
-  const r = RANGES[range];
-  // if the whole tracked history fits inside the window, everything counts
-  const wholeFits = spanDays <= r.unit;
-  const cur = within(dated, now, r.unit);
-  const built = wholeFits ? total : cur;
-  const today = cstDate(now);
-  const prev = dated.filter(d => { const g = dayDiff(d, today); return g >= r.unit && g < 2 * r.unit; }).length;
-  const delta = cur - prev;
-  const avg = total / (spanDays / r.unit);
-  const best = Math.max(0, ...buckets(dated, range));
-  const trend = wholeFits
-    ? "the whole history fits this window"
-    : prev === 0
-      ? (cur > 0 ? "first activity in this window" : "nothing in the prior " + r.uname)
-      : `<b>${delta >= 0 ? "+" : ""}${delta}</b> vs the previous ${r.uname}`;
+  /* ---------------- tooltip ---------------- */
+  var tipEl = $("#tip");
+  function showTip(html, x, y) {
+    tipEl.innerHTML = html; tipEl.style.opacity = "1";
+    var r = tipEl.getBoundingClientRect();
+    var left = Math.min(Math.max(8, x + 14), window.innerWidth - r.width - 8);
+    var top = Math.max(8, y - r.height - 12);
+    tipEl.style.left = left + "px"; tipEl.style.top = top + "px";
+  }
+  function hideTip() { tipEl.style.opacity = "0"; }
 
-  return bubble(`Systems built, ${r.wlabel}`, fmt(built), trend)
-    + bubble(`Avg systems per ${r.uname}`, avg.toFixed(avg < 10 ? 1 : 0), since)
-    + bubble(`Most in a ${r.uname}`, best, `peak systems published in one ${r.uname}`)
-    + bubble("Systems built, all-time", `${fmt(total)}<small> / ${fmt(goal)}</small>`, `<b>${pct(total,goal).toFixed(1)}%</b> of the goal`);
-}
+  /* ---------------- hero ---------------- */
+  function renderHero() {
+    var combined = engShipped + delShipped + catalogTotal + masShipped + bnbShipped;
+    var pct = (combined / GOAL) * 100;
+    var parts = [
+      { k: "Engineering", v: engShipped, c: cssv("--eng") },
+      { k: "Delivery", v: delShipped, c: cssv("--del") },
+      { k: "Mastery", v: masShipped, c: cssv("--mas") },
+      { k: "Build & Brew", v: bnbShipped, c: cssv("--bnb") },
+      { k: "NextWork", v: catalogTotal, c: cssv("--nwk") }
+    ];
+    var tot = parts.reduce(function (a, x) { return a + x.v; }, 0) || 1;
+    var segs = parts.map(function (x) {
+      return '<i data-w="' + ((x.v / tot) * pct).toFixed(2) + '" style="width:0;background:' + x.c + '"></i>';
+    }).join("");
+    var keys = parts.map(function (x) {
+      return '<span class="mk"><span class="sw" style="background:' + x.c + '"></span>' +
+        esc(x.k) + ' <b>' + n(x.v) + '</b></span>';
+    }).join("");
 
-// ---------- builder coach -------------------------------------------------
-function coachSection(D, now){
-  const total = D.reported_total, goal = D.goal, remaining = goal - total;
-  const floor = D.target_weekly, rhythm = D.stretch_weekly;
-  const repos = (D.repos || []).filter(r => r.group === "top10");
-  const dates = D.systems.map(s => s.date);
-  const week = within(dates, now, 7), month = within(dates, now, 30);
-  const recentPerWeek = month / (30 / 7);
-  const arrival = perWeek => monthYear(new Date(now.getTime() + (remaining / perWeek) * 7 * DAY));
-  const onFloor = week >= floor;
+    var hrs = D.hours || {};
+    var since = function (days) {
+      var cut = new Date(); cut.setDate(cut.getDate() - days);
+      var iso = cut.toISOString().slice(0, 10);
+      return allDates.filter(function (d) { return d > iso; }).length;
+    };
+    var d7 = since(7), d30 = since(30);
+    var avgH = hrs.avg || 1.96;
+    var h7 = Math.round(d7 * avgH), h30 = Math.round(d30 * avgH);
+    var totH = hrs.full_total != null ? Math.round(hrs.full_total) : 0;
+    var paceWk = (d30 / 30) * 7;
+    var remaining = GOAL - combined;
+    var arrives = function (perWeek) {
+      if (!perWeek || perWeek <= 0) return "not on this pace";
+      var dt = new Date(Date.now() + (remaining / perWeek) * 7 * 86400000);
+      return dt.toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
+    };
+    var scenarios = [
+      { label: "At today's " + paceWk.toFixed(1) + " a week", when: arrives(paceWk) },
+      { label: "At 10 a week", when: arrives(10) },
+      { label: "At 20 a week", when: arrives(20) }
+    ];
 
-  const quiet = repos.filter(r => (daysSince(r.last_added, now) || 0) > 45);
-  const engine = repos.slice().sort((a, b) => b.count - a.count)[0];
-  const bestWeek = Math.max(0, ...buckets(dates, "weekly"));
+    $("#hero").innerHTML =
+      /* group 1: progress toward the goal */
+      '<div class="hgroup">' +
+        '<div class="kicker">Progress to 1,000 systems</div>' +
+        '<div class="hero-fig"><span class="n num-anim" data-count="' + combined + '" data-dur="1250">0</span>' +
+          '<span class="d">/ ' + n(GOAL) + '</span></div>' +
+        '<div class="hero-sub"><b>' + pct.toFixed(1) + '%</b> of the goal &middot; ' + n(GOAL - combined) + ' to go</div>' +
+        '<div class="meter" role="img" aria-label="' + n(combined) + ' of ' + n(GOAL) + ' systems, by track">' + segs + '</div>' +
+        '<div class="kicker" style="margin:12px 0 4px;font-size:9.5px;letter-spacing:.16em">Where the ' + n(combined) + ' comes from</div>' +
+        '<div class="meter-key">' + keys + '</div>' +'<div class="kicker" style="margin:16px 0 6px;font-size:9.5px;letter-spacing:.16em">When 1,000 arrives</div>' +
+        '<div class="scen">' + scenarios.map(function (sc) {
+          return '<div class="scen-row"><span class="scen-l">' + esc(sc.label) + '</span>' +
+            '<span class="scen-r">' + esc(sc.when) + '</span></div>';
+        }).join("") + '</div>' +
+      '</div>' +
+      /* group 2: the work queue, compact and scrollable */
+      '<div class="hgroup queue" id="queue"></div>' +
+      /* group 3: recent signal */
+      '<div class="hgroup">' +
+        '<div class="kicker">Pace and output</div>' +
+        '<div class="microrow">' +
+          '<div class="micro"><div class="l">Last 7 days</div><div class="v num-anim" data-count="' + d7 + '">0</div><div class="s">systems</div></div>' +
+          '<div class="micro"><div class="l">7-day hours</div><div class="v num-anim" data-count="' + h7 + '">0</div><div class="s">at ' + avgH + ' h each</div></div>' +
+          '<div class="micro"><div class="l">Last 30 days</div><div class="v num-anim" data-count="' + d30 + '">0</div><div class="s">systems</div></div>' +
+          '<div class="micro"><div class="l">30-day hours</div><div class="v num-anim" data-count="' + h30 + '">0</div><div class="s">at ' + avgH + ' h each</div></div>' +
+          '<div class="micro"><div class="l">Total hours</div><div class="v num-anim" data-count="' + totH + '">0</div><div class="s">logged to date</div></div>' +
+          '<div class="micro"><div class="l">Public repos</div><div class="v num-anim" data-count="' + (repos.length + mTracks.length + 1) + '">0</div><div class="s">shipping openly</div></div>' +
+        '</div>' +
+        '<div class="chartwrap" style="margin-top:14px"><div class="kicker" style="margin-bottom:6px;font-size:10px">Systems on GitHub, running total</div>' + lineChart() + '</div>' +
+      '</div>';
+    wireLine();
+    renderQueue();
+    runCounters($("#hero"));
+    growFills($("#hero"));
+  }
 
-  const headline = onFloor
-    ? `Floor cleared. Push toward <span class="em">${rhythm} a week</span>.`
-    : `Ship <span class="em">${floor} systems</span> this week.`;
-
-  const bullets = [];
-  bullets.push(`Your floor is <b>${floor} a week</b>, the rhythm to grow into is <b>${rhythm}</b>. `
-    + `Last 7 days you shipped <b>${week}</b>; your 30-day pace is <b>${recentPerWeek.toFixed(1)} a week</b>.`);
-  bullets.push(`Hold <b>${floor} a week</b> and 1,000 arrives around <b>${arrival(floor)}</b>. `
-    + `Find the <b>${rhythm}</b> rhythm and it is <b>${arrival(rhythm)}</b>.`);
-  if (quiet.length)
-    bullets.push(`<span class="flag">${quiet.length} ${quiet.length === 1 ? "lens has" : "lenses have"} gone quiet</span> (no new build in 45+ days): `
-      + quiet.map(q => q.slug).join(", ") + ". Revisit them or set them aside on purpose.");
-  else
-    bullets.push(`Every lens has shipped within the last 45 days. The whole portfolio is warm.`);
-  if (engine)
-    bullets.push(`<b>${engine.slug}</b> is your engine with <b>${engine.count}</b> systems. The pattern that makes it productive is worth copying into the thinner lenses.`);
-  bullets.push(`Best week so far: <b>${bestWeek}</b> systems. `
-    + (bestWeek >= floor ? `You have already cleared the floor in a single week, so do it again.` : `Reaching ${floor} would beat it.`));
-
-  return `
-    <span class="pill ${onFloor ? "on" : "off"}">${onFloor ? "Holding the floor" : `Below the ${floor}/week floor`}</span>
-    <div class="headline">${headline}</div>
-    <ul class="coach-bullets">${bullets.map(b => `<li>${b}</li>`).join("")}</ul>`;
-}
-
-// ---------- dual trajectory chart ----------------------------------------
-function trajectory(D, now){
-  const goal = D.goal, total = D.reported_total, remaining = goal - total;
-  const dated = D.systems.map(s => s.date).sort();
-  if (dated.length < 2) return { tiles: "", chart: '<div class="empty">The trajectory appears once a few systems are on record.</div>', takeaway: "" };
-
-  const start = ymd(D.analytics_start);
-  const baseline = Math.max(0, total - dated.length);   // work that predates GitHub timestamps
-  const eoy = ymd(D.goal_targets.end_of_year);
-  const two = ymd(D.goal_targets.two_year);
-  const month = within(dated, now, 30);
-  const perWeek = month / (30 / 7);
-  const floor = D.target_weekly, rhythm = D.stretch_weekly;
-  const arrival = perW => perW > 0 ? new Date(now.getTime() + (remaining / (perW / 7)) * DAY) : null;
-
-  // chart geometry: x from the NextWork start to the 2-year reference, y 0..goal
-  const W = 1000, H = 320, pad = { l: 50, r: 18, t: 18, b: 30 };
-  const minX = start.getTime(), maxX = two.getTime();
-  const px = t => pad.l + ((t - minX) / (maxX - minX)) * (W - pad.l - pad.r);
-  const py = v => H - pad.b - (v / goal) * (H - pad.t - pad.b);
-
-  // actual cumulative, starting from the pre-tracking baseline
-  let actual = `M ${px(minX).toFixed(1)} ${py(baseline).toFixed(1)}`;
-  dated.forEach((d, i) => { actual += ` L ${px(ymd(d).getTime()).toFixed(1)} ${py(baseline + i + 1).toFixed(1)}`; });
-  actual += ` L ${px(now.getTime()).toFixed(1)} ${py(total).toFixed(1)}`;
-  const area = actual + ` L ${px(now.getTime()).toFixed(1)} ${py(0).toFixed(1)} L ${px(minX).toFixed(1)} ${py(0).toFixed(1)} Z`;
-
-  const nx = px(now.getTime()), ny = py(total);
-  // a pace line from today, climbing at perWeek, clipped to the chart box
-  const paceLine = (perW, color, dash) => {
-    const pd = perW / 7;
-    if (pd <= 0) return "";
-    const arriveMs = now.getTime() + (remaining / pd) * DAY;
-    const endT = Math.min(arriveMs, maxX);
-    const endV = Math.min(goal, total + pd * ((endT - now.getTime()) / DAY));
-    return `<path d="M ${nx} ${ny} L ${px(endT)} ${py(endV)}" stroke="${color}" stroke-width="2.5" stroke-dasharray="${dash}" fill="none"/>`;
-  };
-  const projLine = paceLine(perWeek, "var(--stone)", "3 5");
-  const floorLine = paceLine(floor, "var(--accent)", "7 5");
-  const rhythmLine = paceLine(rhythm, "var(--good)", "7 5");
-
-  const grid = [0, 0.25, 0.5, 0.75, 1].map(f => {
-    const v = goal * f, y = py(v);
-    return `<line x1="${pad.l}" y1="${y}" x2="${W-pad.r}" y2="${y}" stroke="var(--line)" stroke-width="1"/>`
-      + `<text class="axis" x="${pad.l-8}" y="${y+4}" text-anchor="end">${fmt(v)}</text>`;
-  }).join("");
-  const xticks = [start, now, eoy, two].map(dt =>
-    `<text class="axis" x="${px(dt.getTime())}" y="${H-pad.b+18}" text-anchor="middle">${monthYear(dt)}</text>`
-    + `<line x1="${px(dt.getTime())}" y1="${pad.t}" x2="${px(dt.getTime())}" y2="${H-pad.b}" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 4"/>`
-  ).join("");
-
-  const chart = `
-    <svg width="100%" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">
-      <defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.3"/>
-        <stop offset="100%" stop-color="var(--accent)" stop-opacity="0.02"/>
-      </linearGradient></defs>
-      ${grid}${xticks}
-      <path d="${area}" fill="url(#ga)"/>
-      ${rhythmLine}${floorLine}${projLine}
-      <path d="${actual}" fill="none" stroke="var(--accent-2)" stroke-width="3" stroke-linejoin="round"/>
-      <circle cx="${nx}" cy="${ny}" r="4.5" fill="var(--accent-2)"/>
-    </svg>
-    <div class="legend">
-      <span style="color:var(--accent-2)"><i></i>Actual, ${fmt(total)} built since ${monthYear(start)}</span>
-      <span style="color:var(--stone)"><i style="border-top-style:dashed"></i>Current pace, ${perWeek.toFixed(1)}/wk</span>
-      <span style="color:var(--accent)"><i style="border-top-style:dashed"></i>Floor, ${floor}/wk</span>
-      <span style="color:var(--good)"><i style="border-top-style:dashed"></i>Rhythm, ${rhythm}/wk</span>
-    </div>`;
-
-  const aNow = arrival(perWeek), aFloor = arrival(floor), aRhythm = arrival(rhythm);
-  const tiles =
-      bubble("Current pace", perWeek.toFixed(1) + "<small> /wk</small>", aNow ? `1,000 around ${aNow.getFullYear()}` : "stalled")
-    + bubble(`Floor, ${floor}/wk`, monthYear(aFloor), "1,000 if you hold the floor")
-    + bubble(`Rhythm, ${rhythm}/wk`, monthYear(aRhythm), "1,000 at full rhythm")
-    + bubble("Remaining", fmt(remaining), "systems to the goal");
-
-  const takeaway = perWeek >= floor
-    ? `You are at or above your <b>${floor}/week</b> floor. Hold it and 1,000 lands around <b>${monthYear(aFloor)}</b>; the <b>${rhythm}/week</b> rhythm pulls it in to <b>${monthYear(aRhythm)}</b>.`
-    : `At today's <b>${perWeek.toFixed(1)}/week</b>, 1,000 is around <b>${aNow ? aNow.getFullYear() : "?"}</b>. Holding your <b>${floor}/week</b> floor brings it to <b>${monthYear(aFloor)}</b>; the <b>${rhythm}/week</b> rhythm to <b>${monthYear(aRhythm)}</b>.`;
-
-  return { chart, tiles, takeaway };
-}
-
-// ---------- groups (top 10 vs catalog) -----------------------------------
-function comparison(D, now){
-  const all = D.reported_total, top = D.totals.top10, cat = D.catalog_total;
-  const repos = D.repos || [];
-  const nTop = repos.filter(r => r.group === "top10").length || 10;
-  const lens = repos.find(r => r.group === "lens11") || {};
-  const domains = lens.domains || 0;
-  const topShare = pct(top, all), catShare = pct(cat, all);
-  return `
-    <div class="stackbar">
-      <div class="seg a" style="width:${topShare}%">${topShare >= 14 ? top : ""}</div>
-      <div class="seg b" style="width:${catShare}%">${catShare >= 14 ? cat : ""}</div>
-    </div>
-    <div class="stack-legend">
-      <span><i style="background:var(--accent)"></i>Original builds, ${topShare.toFixed(0)}% of the portfolio</span>
-      <span><i style="background:var(--stone)"></i>NextWork catalog, ${catShare.toFixed(0)}%</span>
-    </div>
-    <div class="cmp">
-      ${bubble("Original builds, top 10 lenses", top, `${nTop} lenses &middot; ${(top/nTop).toFixed(1)} avg per lens &middot; a run to 1,000`)}
-      ${bubble("NextWork catalog, all-time", cat, `${domains} domains &middot; ${domains ? (cat/domains).toFixed(1) : 0} avg per domain &middot; validated builds`)}
-    </div>`;
-}
-
-// ---------- ten repos, grouped, each a run to 100 -----------------------
-function staleness(d){
-  if (d === null) return { color: "var(--muted)", label: "none yet" };
-  const lab = d === 0 ? "today" : d + "d ago";
-  if (d <= 14) return { color: "var(--good)", label: lab };
-  if (d <= 45) return { color: "var(--muted)", label: lab };
-  return { color: "var(--warn)", label: lab };
-}
-function repoRow(r, now, target){
-  const s = staleness(daysSince(r.last_added, now));
-  const hrs = (r.hours != null) ? r.hours + " h" : "n/a";
-  const bd = (r.hours_breakdown || []).map(b => `${b.name}: ${b.hours} h`);
-  const est = r.count - (r.hours_breakdown ? r.hours_breakdown.length : 0);
-  if (est > 0) bd.push(`+ ${est} not logged, estimated at ${G.hours ? G.hours.avg : "?"} h each`);
-  const tip = bd.length ? `Build hours by project\n${bd.join("\n")}` : "";
-  return `<div class="rrow">
-    <div class="rname"><a href="${r.url}" target="_blank" rel="noopener">${r.slug}</a></div>
-    <div class="rrole">${r.role}</div>
-    <div class="rbar-track"><div class="rbar-fill" style="width:${pct(r.count, target)}%"></div></div>
-    <div class="rcount"><b>${r.count}</b> <span>/ ${target}</span></div>
-    <div class="rhours" title="${tip.replace(/"/g, "&quot;")}">${hrs}</div>
-    <div class="ract" style="color:${s.color}"><span class="dot" style="background:${s.color}"></span>${s.label}</div>
-  </div>`;
-}
-function repoGroup(name, repos, now, target, first){
-  if (!repos.length) return "";
-  const sub = repos.reduce((a, r) => a + r.count, 0);
-  const hrs = repos.reduce((a, r) => a + (r.hours || 0), 0);
-  const cap = repos.length * target;
-  const rows = repos.slice().sort((a, b) => b.count - a.count).map(r => repoRow(r, now, target)).join("");
-  return `<div class="rgroup-head${first ? " first" : ""}">
-      <span class="rgroup-title">${name}</span>
-      <span class="rgroup-sub">${repos.length} lenses &middot; <b>${sub}</b> / ${cap} systems &middot; <b>${Math.round(hrs)}</b> h</span>
-    </div>${rows}`;
-}
-function repoTable(D, now){
-  const repos = (D.repos || []).filter(r => r.group === "top10");
-  if (!repos.length) return '<div class="empty">No repos on record.</div>';
-  const target = D.repo_target || 100;
-  const eng = repos.filter(r => r.area === "engineering");
-  const del = repos.filter(r => r.area === "delivery");
-  return `<div class="repos">
-    <div class="rhead"><div>Repo</div><div>Mastery role</div><div>Progress to ${target}</div><div class="r-r">Built</div><div class="r-r">Hours</div><div class="r-r">Last build</div></div>
-    ${repoGroup("Engineering", eng, now, target, true)}
-    ${repoGroup("Delivery", del, now, target, false)}
-  </div>`;
-}
-
-// ---------- practice-hours mastery marker --------------------------------
-function masterySection(D, now){
-  const h = D.hours;
-  if (!h) return "";
-  const goalH = h.mastery_goal || 10000;
-  const have = h.full_total;
-  const togo = Math.max(0, goalH - have);
-  const avg = h.avg || 2;
-  const builds = Math.round(togo / avg);
-  const floorHrs = (D.target_weekly || 10) * avg;
-  const rhythmHrs = (D.stretch_weekly || 20) * avg;
-  const etaFloor = monthYear(new Date(now.getTime() + (togo / floorHrs) * 7 * DAY));
-  const etaRhythm = monthYear(new Date(now.getTime() + (togo / rhythmHrs) * 7 * DAY));
-  const p = pct(have, goalH);
-
-  let pillarsHtml = "", lastGroup = null, n = 0;
-  (h.pillars || []).forEach(pl => {
-    n++;
-    if (pl.group !== lastGroup) {
-      pillarsHtml += `<div class="pillar-group">${pl.group_label || pl.group}</div>`;
-      lastGroup = pl.group;
+  /* ---------------- cumulative line ---------------- */
+  var LW = 520, LH = 132, LP = { t: 10, r: 8, b: 20, l: 30 };
+  var CHART_FROM = "2026-01-01";
+  function chartSeries() {
+    /* the running total still counts everything, but the window shown starts in
+       January 2026 so the recent slope is readable instead of squashed */
+    var out = series.filter(function (pt) { return pt.d >= CHART_FROM; });
+    if (out.length < 2) return series.slice();
+    var before = series.filter(function (pt) { return pt.d < CHART_FROM; });
+    out = [{ d: CHART_FROM, v: before.length ? before[before.length - 1].v : 0 }].concat(out);
+    return out;
+  }
+  function lineChart() {
+    var series = chartSeries();
+    if (series.length < 2) return '<div class="empty">Not enough history yet.</div>';
+    var maxV = series[series.length - 1].v;
+    var t0 = +new Date(series[0].d), t1 = +new Date(series[series.length - 1].d) || t0 + 1;
+    var span = (t1 - t0) || 1;
+    var X = function (d) { return LP.l + ((+new Date(d) - t0) / span) * (LW - LP.l - LP.r); };
+    var Y = function (v) { return LP.t + (1 - v / maxV) * (LH - LP.t - LP.b); };
+    var pts = series.map(function (p) { return X(p.d) + "," + Y(p.v); });
+    var area = "M" + X(series[0].d) + "," + Y(0) + "L" + pts.join("L") +
+               "L" + X(series[series.length - 1].d) + "," + Y(0) + "Z";
+    var grids = [0, 0.5, 1].map(function (f) {
+      var y = Y(maxV * f);
+      return '<line class="grid" x1="' + LP.l + '" y1="' + y + '" x2="' + (LW - LP.r) + '" y2="' + y + '"/>' +
+             '<text x="' + (LP.l - 6) + '" y="' + (y + 3.5) + '" text-anchor="end">' + Math.round(maxV * f) + '</text>';
+    }).join("");
+    return '<svg class="chart" viewBox="0 0 ' + LW + ' ' + LH + '" role="img" ' +
+      'aria-label="Cumulative systems published to GitHub, ' + fmtDate(series[0].d) + ' to ' + fmtDate(series[series.length - 1].d) + '">' +
+      grids +
+      '<path class="areafill" d="' + area + '" fill="' + cssv("--act") + '"/>' +
+      '<path class="lineseries draw" id="ls" d="M' + pts.join("L") + '" stroke="' + cssv("--act") + '"/>' +
+      '<line class="axis" x1="' + LP.l + '" y1="' + Y(0) + '" x2="' + (LW - LP.r) + '" y2="' + Y(0) + '"/>' +
+      '<text x="' + LP.l + '" y="' + (LH - 5) + '">' + fmtDate(series[0].d) + '</text>' +
+      '<text x="' + (LW - LP.r) + '" y="' + (LH - 5) + '" text-anchor="end">' + fmtDate(series[series.length - 1].d) + '</text>' +
+      '<line class="crosshair" id="ch" y1="' + LP.t + '" y2="' + Y(0) + '"/>' +
+      '<circle class="hdot" id="hd" r="4" fill="' + cssv("--act") + '" stroke="' + cssv("--surface") + '" stroke-width="2"/>' +
+      '<rect class="hovercell" id="hc" x="' + LP.l + '" y="0" width="' + (LW - LP.l - LP.r) + '" height="' + LH + '"/>' +
+      '</svg>';
+  }
+  function wireLine() {
+    var hc = document.getElementById("hc"); if (!hc) return;
+    var svg = hc.ownerSVGElement, ch = document.getElementById("ch"), hd = document.getElementById("hd");
+    var ls = document.getElementById("ls");
+    if (ls && ls.getTotalLength) { ls.style.setProperty("--len", ls.getTotalLength()); }
+    var series = chartSeries();
+    var maxV = series[series.length - 1].v;
+    var t0 = +new Date(series[0].d), t1 = +new Date(series[series.length - 1].d) || t0 + 1;
+    var span = (t1 - t0) || 1;
+    var X = function (d) { return LP.l + ((+new Date(d) - t0) / span) * (LW - LP.l - LP.r); };
+    var Y = function (v) { return LP.t + (1 - v / maxV) * (LH - LP.t - LP.b); };
+    function move(ev) {
+      var r = svg.getBoundingClientRect();
+      var vx = ((ev.clientX - r.left) / r.width) * LW;
+      var best = series[0], bd = Infinity;
+      series.forEach(function (p) { var d = Math.abs(X(p.d) - vx); if (d < bd) { bd = d; best = p; } });
+      var px = X(best.d), py = Y(best.v);
+      ch.setAttribute("x1", px); ch.setAttribute("x2", px); ch.style.opacity = "0.6";
+      hd.setAttribute("cx", px); hd.setAttribute("cy", py); hd.style.opacity = "1";
+      showTip('<div class="tt">' + fmtDate(best.d) + '</div><div class="tv">' + best.v + ' systems on GitHub</div>', ev.clientX, ev.clientY);
     }
-    pillarsHtml += `<div class="pillar"><div class="pn">${n}</div><div><div class="pt">${pl.title}</div><div class="pd">${pl.detail}</div></div></div>`;
-  });
+    hc.addEventListener("mousemove", move);
+    hc.addEventListener("mouseleave", function () { ch.style.opacity = "0"; hd.style.opacity = "0"; hideTip(); });
+  }
 
-  let equivHtml = "";
-  (h.equivalents || []).forEach(e => {
-    const v = have / e.per;
-    equivHtml += bubble(e.label, "&asymp; " + (v < 10 ? v.toFixed(1) : Math.round(v)), e.note);
-  });
+  /* ---------------- bar list ---------------- */
+  function barList(items, color) {
+    if (!items.length) return '<div class="empty">Nothing shipped here yet.</div>';
+    var max = Math.max.apply(null, items.map(function (i) { return i.v; })) || 1;
+    return '<div class="bars">' + items.map(function (i) {
+      var w = Math.max(1.5, (i.v / max) * 100);
+      var tag = i.url ? "a" : "div";
+      var href = i.url ? ' href="' + esc(i.url) + '" target="_blank" rel="noopener"' : "";
+      return "<" + tag + ' class="bar"' + href + ' data-t="' + esc(i.name) + '" data-v="' + i.v + '" data-s="' + esc(i.sub || "") + '">' +
+        '<span class="nm">' + esc(i.name) + (i.sub ? '<small>' + esc(i.sub) + '</small>' : '') + '</span>' +
+        '<span class="track"><i data-w="' + w.toFixed(1) + '" style="width:0;background:' + color + '"></i></span>' +
+        sparkline(i.dates, color) +
+        '<span class="vl num-anim" data-count="' + i.v + '" data-dur="800">0</span>' +
+        "</" + tag + ">";
+    }).join("") + '</div>';
+  }
+  function wireBars(root) {
+    root.querySelectorAll(".bar").forEach(function (el) {
+      el.addEventListener("mousemove", function (ev) {
+        showTip('<div class="tt">' + esc(el.dataset.t) + '</div><div class="tv">' +
+          n(el.dataset.v) + ' systems' + (el.dataset.s ? ' &middot; ' + esc(el.dataset.s) : '') + '</div>',
+          ev.clientX, ev.clientY);
+      });
+      el.addEventListener("mouseleave", hideTip);
+    });
+  }
 
-  return `
-    <div class="section-label">Toward 10,000 hours</div>
-    <div class="card">
-      <h2>The 10,000-hour mark</h2>
-      ${h.why ? `<div class="why">${h.why}</div>` : ""}
-      <div class="card-note">The 10,000-hour figure (Malcolm Gladwell's <i>Outliers</i>, 2008) popularized K. Anders Ericsson's deliberate-practice research as a mark of world-class mastery. Ericsson later called the round number a myth: there is no fixed threshold, focused practice with feedback matters more than the raw count, and the hours vary widely by field. Treated here as a long-range marker, not a guarantee.</div>
-      <div class="pbar-wrap">
-        <div class="pbar"><div class="fill" style="width:${p}%"></div></div>
-        <div class="ticks"><span style="left:25%">${fmt(goalH * 0.25)}</span><span style="left:50%">${fmt(goalH * 0.5)}</span><span style="left:75%">${fmt(goalH * 0.75)}</span><span style="left:100%">${fmt(goalH)}</span></div>
-      </div>
-      <div class="tiles" style="margin:18px 0 6px">
-        ${bubble("Hours of practice", have + "<small> h</small>", `${p.toFixed(1)}% of ${fmt(goalH)}`)}
-        ${bubble("Hours to go", fmt(togo) + "<small> h</small>", `about ${fmt(builds)} more builds at ${avg} h each`)}
-        ${bubble("At 10 systems/week", etaFloor, `roughly ${Math.round(floorHrs)} h per week`)}
-        ${bubble("At 20 systems/week", etaRhythm, `roughly ${Math.round(rhythmHrs)} h per week`)}
-      </div>
-      ${equivHtml ? `<div class="pillars-intro">What ${fmt(have)} hours of practice is equivalent to</div>
-      <div class="tiles" style="margin-bottom:16px">${equivHtml}</div>` : ""}
-      ${pillarsHtml ? `<div class="pillars-intro">What these hours are mastering</div>
-      <div class="pillars">${pillarsHtml}</div>` : ""}
-    </div>`;
-}
+  /* ---------------- panels ---------------- */
+  function panelFor(t) {
+    var c = cssv(t.cvar);
+    var head = '<div class="lede"><div><h2>' + esc(t.label) + '</h2><p>' + esc(t.blurb) + '</p></div>' +
+      '<div class="lede-fig"><div><span class="n num-anim" data-count="' + t.count + '" data-dur="1100">0</span></div>' +
+      '<span class="d"> / ' + n(t.target) + '</span></div>' +
+      '<div class="s">SYSTEMS SHIPPED</div></div></div>';
 
-// belt-style ranks earned across a 100-build run, like a trade or a martial art
-const MASTERY_RANKS = ["Amateur", "Apprentice", "Journeyman", "Craftsman", "Expert", "Master"];
-function masteryRank(n){
-  if (n >= 100) return 5;   // Master, the full run
-  if (n >= 75) return 4;    // Expert
-  if (n >= 50) return 3;    // Craftsman
-  if (n >= 25) return 2;    // Journeyman
-  if (n >= 1) return 1;     // Apprentice, off the mark
-  return 0;                 // Amateur, the start
-}
-function masteryTracksSection(D){
-  const m = D.mastery;
-  if (!m || !Array.isArray(m.tracks) || !m.tracks.length) return "";
-  const groups = [
-    ["The Human System", "Body &amp; Brain", "how we age, how we move, how we think"],
-    ["The Built World", "Built &amp; Capital", "design, development, and the capital behind them"],
+    if (t.id === "total") {
+      var allD = allDates.slice();
+      var newestA = allD.length ? allD[allD.length - 1] : null;
+      var dsA = newestA ? Math.round((Date.now() - new Date(newestA + "T00:00:00Z")) / 86400000) : null;
+      var l90 = allD.filter(function (x) {
+        return (Date.now() - new Date(x + "T00:00:00Z")) / 86400000 <= 90; }).length;
+      var hrsA = (D.hours || {}).full_total || 0;
+      var others = TRACKS.filter(function (x) { return x.id !== "total"; });
+      var tilesT =
+        '<div class="tiles">' +
+          '<div class="tile"><div class="l">Built</div><div class="v num-anim" data-count="' + t.count + '" data-dur="1200">0</div>' +
+            '<div class="s">of ' + n(t.target) + ' &middot; ' + ((t.count / t.target) * 100).toFixed(1) + '%</div></div>' +
+          '<div class="tile"><div class="l">Tracks</div><div class="v num-anim" data-count="' + others.length + '">0</div>' +
+            '<div class="s">running in parallel</div></div>' +
+          '<div class="tile"><div class="l">Last 90 days</div><div class="v num-anim" data-count="' + l90 + '">0</div>' +
+            '<div class="s">systems published</div></div>' +
+          '<div class="tile"><div class="l">Last shipped</div><div class="v" style="font-size:17px">' +
+            (newestA ? fmtDate(newestA) : "&mdash;") + '</div><div class="s">' +
+            (dsA === null ? "no history" : dsA === 0 ? "today" : dsA === 1 ? "yesterday" : dsA + " days ago") + '</div></div>' +
+          '<div class="tile"><div class="l">Hours</div><div class="v num-anim" data-count="' + Math.round(hrsA) + '">0</div>' +
+            '<div class="s">logged and estimated</div></div>' +
+        '</div>';
+      var bodyT = "";
+      bodyT += '<div class="block"><h3>Every track, and how far it is</h3>' +
+        '<p class="note">Each lens and each mastery field runs to ' + PER_LENS +
+        ' builds. Every track counts toward the 1,000, and hours are shown wherever a build recorded them.</p>' +
+        '<div class="lrow-head"><span>Track</span><span class="c2">Progress</span>' +
+        '<span class="r">Built</span><span class="r">Hours</span></div>' +
+        others.map(function (o) {
+          var pc = Math.min(100, (o.count / o.target) * 100);
+          return '<button class="lrow" type="button" data-goto="' + esc(o.id) + '" ' +
+            'data-t="' + esc(o.label) + '" data-v="' + o.count + '" style="width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);font:inherit;color:inherit;cursor:pointer">' +
+            '<span class="nm">' + esc(o.label) + '<small>' + esc(o.short || "") + '</small></span>' +
+            '<span class="track"><i data-w="' + pc.toFixed(1) + '" style="width:0;background:' + cssv(o.cvar) + '"></i></span>' +
+            '<span class="cnt">' + n(o.count) + '<small> / ' + n(o.target) + '</small></span>' +
+            '<span class="upd">' + (trackHours(o.id) ? n(Math.round(trackHours(o.id))) + " h" : "&mdash;") + '</span>' +
+            '</button>';
+        }).join("") + '</div>';
+      return head + bodyT;
+    }
+    if (t.id === "engineering" || t.id === "delivery" || t.id === "nextwork") {
+      /* ordered as a work queue: longest idle at the top, most recent at the bottom */
+      var list = t.repos.slice().map(function (r) {
+        if (t.id !== "nextwork") return r;
+        var o = {}; for (var k in r) o[k] = r[k];
+        o.count = catalogTotal; o.role = "Verified curriculum, completed";
+        return o;
+      }).sort(function (a, b) {
+        var da = staleDays(a.last_added), db = staleDays(b.last_added);
+        if (da === null) return -1;
+        if (db === null) return 1;
+        return db - da;
+      });
+      var hrs = sum(t.repos, "hours");
+      var tDates = []; t.repos.forEach(function (r) { (r.dates || []).forEach(function (x) { tDates.push(x); }); });
+      tDates.sort();
+      var newest = tDates.length ? tDates[tDates.length - 1] : null;
+      var daysSince = newest ? Math.round((Date.now() - new Date(newest + "T00:00:00Z")) / 86400000) : null;
+      var last90 = tDates.filter(function (x) {
+        return (Date.now() - new Date(x + "T00:00:00Z")) / 86400000 <= 90; }).length;
+      var shipped = (t.id === "nextwork" ? catalogTotal : sum(t.repos, "count"));
+      var tiles =
+        '<div class="tiles">' +
+          '<div class="tile"><div class="l">Built</div><div class="v num-anim" data-count="' + shipped + '">0</div>' +
+            '<div class="s">of ' + n(t.target) + ' &middot; ' + ((shipped / t.target) * 100).toFixed(1) + '%</div></div>' +
+          '<div class="tile"><div class="l">' + (t.id === "nextwork" ? "Catalog repo" : "Lenses") + '</div>' +
+            '<div class="v num-anim" data-count="' + t.repos.length + '">0</div>' +
+            '<div class="s">' + (t.id === "nextwork" ? "grouped systems" : "each targeting " + PER_LENS) + '</div></div>' +
+          '<div class="tile"><div class="l">Last 90 days</div><div class="v num-anim" data-count="' + last90 + '">0</div>' +
+            '<div class="s">systems published</div></div>' +
+          '<div class="tile"><div class="l">Last shipped</div><div class="v" style="font-size:17px">' +
+            (newest ? fmtDate(newest) : "&mdash;") + '</div>' +
+            '<div class="s">' + (daysSince === null ? "no history" : daysSince === 0 ? "today" : daysSince === 1 ? "yesterday" : daysSince + " days ago") + '</div></div>' +
+          '<div class="tile"><div class="l">Hours</div><div class="v num-anim" data-count="' + Math.round(hrs) + '">0</div>' +
+            '<div class="s">logged and estimated</div></div>' +
+        '</div>';
+      var body = '<div class="block"><h3>' + (t.id === "nextwork" ? "The catalog" : "Each lens, and how far it is to " + PER_LENS) + '</h3>' +
+        '<p class="note">' + (t.id === "nextwork"
+          ? "Counted as " + n(catalogTotal) + " completed curriculum builds, published as " + n(sum(t.repos, "count")) + " grouped systems."
+          : "Every lens runs to " + PER_LENS + " systems. The bar is progress against that; the date is when it last shipped.") + '</p>' +
+        lensRows(list, c) + '</div>';
+      return head + body;
+    }
+    if (t.id === "mastery") {
+      var groups = {};
+      mTracks.forEach(function (m) { (groups[m.group] = groups[m.group] || []).push(m); });
+      var bodyM = '<div class="mgrid">' + Object.keys(groups).map(function (g) {
+        var rows = groups[g].map(function (m) {
+          return { label: m.label, role: MASTERY_ROLES[m.slug] || m.focus,
+                   count: m.onboarded, url: m.url, last_added: m.last_added || null };
+        }).sort(function (a, b) { return b.count - a.count; });
+        return '<div class="block"><h3>' + esc(g) + '</h3>' +
+          '<p class="note">Each field runs to ' + PER_LENS +
+          ' hands-on builds. Fields with no build yet are marked not started rather than idle.</p>' +
+          lensRows(rows, c) + '</div>';
+      }).join("") + '</div>';
+      return head + bodyM;
+    }
+    /* dojo */
+    var dRows = [{ label: bnb.label || "Build & Brew: The AI Dojo", role: "Build Master, live cohort",
+                   count: bnbShipped, url: bnb.url, last_added: bnb.last_added || null }];
+    return head +
+      '<div class="block"><h3>The road to ' + n(t.target) + '</h3>' +
+      '<p class="note">' + esc(bnb.focus || "") + '</p>' +
+      lensRows(dRows, c) + '</div>';
+  }
+
+  /* ---------------- lens rows (every lens targets 100) ---------------- */
+  function lensRows(list, color) {
+    if (!list.length) return '<div class="empty">Nothing shipped here yet.</div>';
+    var head = '<div class="lrow-head"><span>Lens</span><span class="c2">Progress to ' + PER_LENS +
+      '</span><span class="r">Built</span><span class="r">Idle</span></div>';
+    return head + list.map(function (r) {
+      var v = r.count, pct = Math.min(100, (v / PER_LENS) * 100);
+      var notStarted = (v === 0);
+      return '<a class="lrow" href="' + esc(r.url) + '" target="_blank" rel="noopener" ' +
+        'data-t="' + esc(r.label) + '" data-v="' + v + '" data-s="' + esc(r.role || "") + '">' +
+        '<span class="nm">' + esc(r.label) + '<small>' + esc(r.role || "") + '</small></span>' +
+        '<span class="track"><i data-w="' + pct.toFixed(1) + '" style="width:0;background:' + color + '"></i></span>' +
+        '<span class="cnt">' + n(v) + '<small> / ' + PER_LENS + '</small></span>' +
+        '<span class="upd">' + (notStarted
+          ? '<span class="st st-none">not started</span>'
+          : staleCell(r.last_added)) + '</span>' +
+        '</a>';
+    }).join("");
+  }
+
+  /* ---------------- GitHub-style activity ---------------- */
+  function heatmap(dates, color) {
+    if (!dates || !dates.length) return "";
+    var MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    var counts = {};
+    dates.forEach(function (d) { counts[d] = (counts[d] || 0) + 1; });
+
+    var end = new Date((D.generated_at || "").slice(0, 10) + "T00:00:00Z");
+    if (isNaN(end)) end = new Date();
+    end.setUTCDate(end.getUTCDate() + (6 - end.getUTCDay()));
+    var startD = new Date(end);
+    startD.setUTCDate(startD.getUTCDate() - (52 * 7 + 6));
+
+    var days = [], d = new Date(startD);
+    while (d <= end) { days.push(d.toISOString().slice(0, 10)); d.setUTCDate(d.getUTCDate() + 1); }
+
+    var weeks = [], i;
+    for (i = 0; i < days.length; i += 7) weeks.push(days.slice(i, i + 7));
+
+    var max = 0;
+    Object.keys(counts).forEach(function (k) { if (counts[k] > max) max = counts[k]; });
+    var OP = [0, 0.30, 0.50, 0.74, 1];
+
+    var months = weeks.map(function (w, wi) {
+      var m = new Date(w[0] + "T00:00:00Z").getUTCMonth();
+      var prev = wi ? new Date(weeks[wi - 1][0] + "T00:00:00Z").getUTCMonth() : -1;
+      return '<span>' + (m !== prev ? MON[m] : "") + '</span>';
+    }).join("");
+
+    var cells = weeks.map(function (w) {
+      return w.map(function (iso) {
+        var c = counts[iso] || 0;
+        if (!c) return '<i></i>';
+        var lvl = Math.min(4, Math.ceil((c / Math.max(1, max)) * 4));
+        return '<i data-n="' + c + '" data-d="' + iso + '" style="background:' + color +
+               ';opacity:' + OP[lvl] + '"></i>';
+      }).join("");
+    }).join("");
+
+    var leg = OP.map(function (op, l) {
+      return '<i style="' + (l ? "background:" + color + ";opacity:" + op : "background:var(--sunk)") + '"></i>';
+    }).join("");
+
+    var act = Object.keys(counts).filter(function (k) {
+      return k >= days[0] && k <= days[days.length - 1]; }).length;
+    return '<div class="heatwrap"><div class="heatinner">' +
+        '<div class="heatmonths">' + months + '</div>' +
+        '<div class="heat">' + cells + '</div>' +
+      '</div></div>' +
+      '<div class="heatlegend"><span style="margin-right:auto">' + act +
+        ' active days in the last year</span>Less ' + leg + ' More</div>';
+  }
+  function wireHeat(root) {
+    root.querySelectorAll(".heat i[data-n]").forEach(function (el) {
+      el.addEventListener("mousemove", function (ev) {
+        showTip('<div class="tt">' + fmtDate(el.dataset.d) + '</div><div class="tv">' +
+          el.dataset.n + (el.dataset.n === "1" ? " system" : " systems") + ' published</div>',
+          ev.clientX, ev.clientY);
+      });
+      el.addEventListener("mouseleave", hideTip);
+    });
+  }
+
+  /* ---------------- idle / staleness ---------------- */
+  function staleDays(iso) {
+    if (!iso) return null;
+    return Math.floor((Date.now() - new Date(iso + "T00:00:00Z")) / 86400000);
+  }
+  function staleCell(iso) {
+    var d = staleDays(iso);
+    if (d === null) return '<span class="st st-none">no history</span>';
+    var lvl = d <= 14 ? "fresh" : d <= 45 ? "aging" : "stale";
+    var label = d === 0 ? "today" : d === 1 ? "1 day" : d + " days";
+    return '<span class="st st-' + lvl + '" title="Last shipped ' + esc(fmtDate(iso)) + '">' +
+      label + '</span><small class="stl">' + lvl + '</small>';
+  }
+
+  /* ---------------- per-track dates + activity ---------------- */
+  function datesFor(t) {
+    if (t.id === "total") return allDates.slice();
+    var out = [];
+    (t.repos || []).forEach(function (r) { (r.dates || []).forEach(function (x) { out.push(x); }); });
+    return out.sort();
+  }
+  function renderActivity() {
+    var el = document.getElementById("activity"); if (!el) return;
+    var t = TRACKS[active];
+    var ds = datesFor(t);
+    var col = (t.id === "total") ? cssv("--text-2") : cssv(t.cvar);
+    var scope = (t.id === "total") ? "every track" : t.label;
+    if (!ds.length) {
+      el.innerHTML = '<h3>Publishing activity &middot; ' + esc(t.label) + '</h3>' +
+        '<p class="note">No per-day history for this track yet. ' +
+        (t.id === "mastery" || t.id === "dojo"
+          ? "Only the latest build date is recorded for these tracks, not a full day-by-day history."
+          : "Nothing published in the last 12 months.") + '</p>';
+      return;
+    }
+    el.innerHTML = '<h3>Publishing activity &middot; ' + esc(t.label) + '</h3>' +
+      '<p class="note">A year of building at a glance, one square per day across ' + esc(scope) +
+      '. Darker squares are days with more systems shipped. Each date is when the work landed on GitHub.</p>' +
+      heatmap(ds, col);
+    wireHeat(el);
+  }
+
+  /* ---------------- metrics strip, per tab ---------------- */
+  function tile(label, value, sub, colour, count) {
+    return '<div class="tot">' +
+      '<span class="rail" style="background:' + (colour || "var(--line-2)") + '"></span>' +
+      '<div class="tl">' + label + '</div>' +
+      '<div class="tv' + (count != null ? ' num-anim" data-count="' + count : '') + '">' +
+        (count != null ? "0" : value) + '</div>' +
+      '<div class="ts">' + sub + '</div></div>';
+  }
+  function renderTotals() {
+    var el = document.getElementById("totals"); if (!el) return;
+    var t = TRACKS[active], html = "";
+    if (t.id === "total") {
+      var counted = TRACKS.filter(function (x) { return x.counts; });
+      var everything = counted.reduce(function (a, x) { return a + x.count; }, 0);
+      html = '<div class="tot lead"><span class="rail" style="background:var(--text-2)"></span>' +
+        '<div class="tl">Total</div>' +
+        '<div class="tv num-anim" data-count="' + everything + '" data-dur="1150">0</div>' +
+        '<div class="mini"><i data-w="' + ((everything / GOAL) * 100).toFixed(2) +
+          '" style="width:0;background:var(--text-2)"></i></div>' +
+        '<div class="ts">of ' + n(GOAL) + ' &middot; ' + ((everything / GOAL) * 100).toFixed(1) +
+        '% &middot; all tracks combined</div></div>';
+      html += counted.map(function (x) {
+        return '<button class="tot" type="button" data-i="' + TRACKS.indexOf(x) + '">' +
+          '<span class="rail" style="background:' + cssv(x.cvar) + '"></span>' +
+          '<div class="tl">' + esc(x.label) + '</div>' +
+          '<div class="tv num-anim" data-count="' + x.count + '" data-dur="900">0</div>' +
+          '<div class="mini"><i data-w="' + Math.min(100, (x.count / x.target) * 100).toFixed(2) +
+            '" style="width:0;background:' + cssv(x.cvar) + '"></i></div>' +
+          '<div class="ts">of ' + n(x.target) + ' &middot; ' +
+            (trackHours(x.id) ? Math.round(trackHours(x.id)) + " h" : "hours not logged") + '</div>' +
+          '</button>';
+      }).join("");
+    } else {
+      var c = cssv(t.cvar);
+      var ds = datesFor(t);
+      var l90 = ds.filter(function (x) {
+        return (Date.now() - new Date(x + "T00:00:00Z")) / 86400000 <= 90; }).length;
+      var pct = Math.min(100, (t.count / t.target) * 100);
+      html = '<div class="tot lead"><span class="rail" style="background:' + c + '"></span>' +
+        '<div class="tl">' + esc(t.label) + '</div>' +
+        '<div class="tv num-anim" data-count="' + t.count + '" data-dur="1150">0</div>' +
+        '<div class="mini"><i data-w="' + pct.toFixed(2) + '" style="width:0;background:' + c + '"></i></div>' +
+        '<div class="ts">of ' + n(t.target) + ' &middot; ' + pct.toFixed(1) + '% &middot; ' +
+        esc(t.short || "") + '</div></div>';
+      if (t.repos && t.repos.length) {
+        var top = t.repos.slice().sort(function (a, b) { return b.count - a.count; })[0];
+        var idles = t.repos.map(function (r) { return staleDays(r.last_added); })
+                           .filter(function (x) { return x !== null; });
+        var worst = idles.length ? Math.max.apply(null, idles) : null;
+        html += tile(t.id === "nextwork" ? "Catalog repo" : "Lenses", "",
+                     t.id === "nextwork" ? "one public repo" : "each running to " + PER_LENS, c, t.repos.length);
+        html += tile("Hours", "", "logged and estimated", c, Math.round(trackHours(t.id)));
+        html += tile("Last 90 days", "", "systems published", c, l90);
+        html += tile("Busiest", esc(top.label),
+                     n(t.id === "nextwork" ? t.count : top.count) + " systems", c, null);
+        html += tile("Longest idle", worst === null ? "&mdash;" : worst + "d",
+                     worst === null ? "no history"
+                       : (worst <= 14 ? "fresh" : worst <= 45 ? "aging" : "stale"), c, null);
+      } else if (t.id === "mastery") {
+        var act = mTracks.filter(function (m) { return m.onboarded > 0; }).length;
+        var lead = mTracks.slice().sort(function (a, b) { return b.onboarded - a.onboarded; })[0];
+        html += tile("Fields", "", "tracks in progress", c, mTracks.length);
+        html += tile("Started", "", "of " + mTracks.length + " with a build", c, act);
+        html += tile("Per-field goal", n(PER_LENS), "hands-on builds each", c, null);
+        html += tile("Furthest", lead ? esc(lead.label.replace(/ ?[&(].*$/, "")) : "&mdash;",
+                     lead ? lead.onboarded + " of " + PER_LENS : "", c, null);
+        html += tile("Remaining", "", "builds to the goal", c, t.target - t.count);
+      } else {
+        html += tile("Remaining", "", "builds to " + n(t.target), c, t.target - t.count);
+        html += tile("Cadence", "Weekly", "live, with the room", c, null);
+        html += tile("Cost", "Free", "beginners welcome", c, null);
+        html += tile("Roles", "12", "solutions-engineering lenses", c, null);
+      }
+    }
+    el.innerHTML = html;
+    growFills(el);
+    el.querySelectorAll("button.tot").forEach(function (b) {
+      b.addEventListener("click", function () {
+        active = +b.dataset.i; render();
+        document.getElementById("tabs").scrollIntoView({ block: "nearest" });
+      });
+    });
+    runCounters(el);
+  }
+
+  /* ---------------- work queue ---------------- */
+  function queueItems() {
+    var out = [];
+    repos.forEach(function (r) {
+      var track = r.area === "engineering" ? "engineering"
+                : r.area === "delivery" ? "delivery" : "nextwork";
+      var tk = TRACKS.filter(function (x) { return x.id === track; })[0];
+      var built = track === "nextwork" ? catalogTotal : r.count;
+      var goal = track === "nextwork" ? (tk ? tk.target : PER_LENS) : PER_LENS;
+      /* a finished track is not a queue item: idle time on something complete is noise */
+      if (built >= goal) return;
+      out.push({ name: r.label, sub: (r.role || ""), url: r.url, grp: "lenses",
+                 idle: staleDays(r.last_added), colour: cssv(tk ? tk.cvar : "--text-2"),
+                 built: built, goal: goal });
+    });
+    mTracks.forEach(function (m) {
+      if (m.onboarded >= PER_LENS) return;
+      out.push({ name: m.label, sub: MASTERY_ROLES[m.slug] || m.focus, url: m.url, grp: "mastery",
+                 idle: staleDays(m.last_added), colour: cssv("--mas"),
+                 built: m.onboarded, goal: PER_LENS });
+    });
+    if (bnb.url && bnbShipped < (bnb.target || PER_LENS)) {
+      out.push({ name: bnb.label || "Build & Brew", sub: "Build Master, live cohort", grp: "dojo",
+                 url: bnb.url, idle: staleDays(bnb.last_added), colour: cssv("--bnb"),
+                 built: bnbShipped, goal: bnb.target || PER_LENS });
+    }
+    /* longest idle first; anything with no date history sorts to the end */
+    out.sort(function (a, b) {
+      if (a.idle === null && b.idle === null) return a.built - b.built;
+      if (a.idle === null) return 1;
+      if (b.idle === null) return -1;
+      return b.idle - a.idle;
+    });
+    return out;
+  }
+  var QGROUPS = [
+    { id: "lenses",  label: "Eng + Delivery" },
+    { id: "mastery", label: "Mastery" },
+    { id: "dojo",    label: "Build & Brew" }
   ];
-  const total = m.total_onboarded || 0;
-  const hereIdx = Math.min(...m.tracks.map(t => masteryRank(t.onboarded || 0)));
-  const ladder = `<div class="ladder">` + MASTERY_RANKS.map((r, i) =>
-      `<span class="rank${i === hereIdx ? " here" : ""}">${r}</span>`
-      + (i < MASTERY_RANKS.length - 1 ? `<span class="arw">&rarr;</span>` : "")
-    ).join("") + `</div>`;
+  var qfilter = "lenses";
+  function renderQueue() {
+    var el = document.getElementById("queue"); if (!el) return;
+    var all = queueItems();
+    var items = all.filter(function (i) { return i.grp === qfilter; });
+    var known = items.filter(function (i) { return i.idle !== null; });
+    var lead = known.length ? known[0] : null;
 
-  let body = "", first = true;
-  groups.forEach(([g, title, blurb]) => {
-    const ts = m.tracks.filter(t => t.group === g);
-    if (!ts.length) return;
-    const sub = ts.reduce((a, t) => a + (t.onboarded || 0), 0);
-    body += `<div class="rgroup-head${first ? " first" : ""}">
-        <span class="rgroup-title">${title}</span>
-        <span class="rgroup-sub">${ts.length} fields &middot; <b>${sub}</b> systems &middot; ${blurb}</span>
-      </div>`;
-    first = false;
-    ts.forEach(t => {
-      const n = t.onboarded || 0;
-      const rank = MASTERY_RANKS[masteryRank(n)];
-      body += `<div class="mtrack">
-        <div class="mname"><a href="${t.url}" target="_blank" rel="noopener">${t.label}</a></div>
-        <div class="mfocus">${t.focus || ""}</div>
-        <div class="mstage"><span class="chip">${rank}</span></div>
-        <div class="mcount"><b>${n}</b> <span>${n === 1 ? "system" : "systems"}</span></div>
-      </div>`;
+    var tabs = '<div class="qtabs" role="tablist">' + QGROUPS.map(function (g) {
+      var count = all.filter(function (i) { return i.grp === g.id; }).length;
+      return '<button class="qtab' + (g.id === qfilter ? " on" : "") + '" type="button" role="tab" ' +
+        'aria-selected="' + (g.id === qfilter) + '" data-g="' + g.id + '" ' +
+        'title="' + esc(g.label) + ', ' + count + ' unfinished">' + esc(g.label) + '</button>';
+    }).join("") + '</div>';
+
+    var body = items.length
+      ? '<div class="qlist">' + items.map(function (i, ix) {
+          var lvl = i.idle === null ? "none" : i.idle <= 14 ? "fresh" : i.idle <= 45 ? "aging" : "stale";
+          return '<a class="qrow' + (ix === 0 ? " top" : "") + '" href="' + esc(i.url) +
+            '" target="_blank" rel="noopener" title="' + esc(i.name) + ', ' +
+            (i.idle === null ? "no publish dates" : i.idle + " days idle") + '">' +
+            '<span class="rank" style="color:' + i.colour + '">' + (ix + 1) + '</span>' +
+            '<span class="qn">' + esc(i.name) + '<small>' + n(i.built) + ' of ' + n(i.goal) + '</small></span>' +
+            '<span class="qd">' + (i.idle === null
+              ? '<span class="st st-none">&mdash;</span>'
+              : '<span class="st st-' + lvl + '">' + i.idle + 'd</span>') + '</span>' +
+            '</a>';
+        }).join("") + '</div>'
+      : '<div class="qempty">Everything here is complete.</div>';
+
+    el.innerHTML = '<div class="kicker">What to build next</div>' +
+      '<p class="note">' + (lead
+        ? 'Longest idle first. <b>' + esc(lead.name) + '</b> leads at ' + lead.idle + ' days.'
+        : "Ordered by what is left to build.") + '</p>' +
+      tabs + body;
+
+    el.querySelectorAll(".qtab").forEach(function (b) {
+      b.addEventListener("click", function () { qfilter = b.dataset.g; renderQueue(); });
     });
-  });
+  }
 
-  return `
-    <div class="section-label">Mastery Tracks: what I study for love, not work</div>
-    <div class="card">
-      <h2>Six fields, amateur to master</h2>
-      <div class="card-note">Self-directed, separate from the engineering portfolio. A hands-on run from amateur to master, not a degree. <b>${total}</b> ${total === 1 ? "system" : "systems"} built across the six so far, each rank earned one build at a time like a trade or a martial art.</div>
-      <div class="pillars-intro">The path, earned one build at a time</div>
-      ${ladder}
-      <div class="repos">${body}</div>
-    </div>`;
-}
-
-function buildAndBrewSection(D){
-  const b = D.build_and_brew;
-  if (!b) return "";
-  const n = b.onboarded || 0, target = b.target || 100;
-  const pctv = target ? Math.min(100, 100 * n / target) : 0;
-  return `
-    <div class="section-label">Build &amp; Brew: the live cohort I run</div>
-    <div class="card">
-      <h2>&#129355; Build &amp; Brew: The AI Dojo</h2>
-      <div class="card-note">A free weekly live cohort on the NextWork Discord. One real AI project built together each week, toward the high-performing solutions engineer across twelve roles. Separate from the engineering portfolio and the mastery tracks. <b>${n}</b> of ${target} shipped so far, one live build at a time.</div>
-      <div class="repos">
-        <div class="mtrack">
-          <div class="mname"><a href="${b.url}" target="_blank" rel="noopener">${b.label}</a></div>
-          <div class="mfocus">${b.focus || ""}</div>
-          <div class="mstage"><span class="chip">Cohort</span></div>
-          <div class="mcount"><b>${n}</b> <span>of ${target}</span></div>
-        </div>
-      </div>
-      <div class="pbar-wrap" style="margin-top:14px">
-        <div class="pbar"><div class="fill" style="width:${pctv}%"></div></div>
-        <div class="togo" style="margin-top:6px"><b>${target - n}</b> to go &middot; ${pctv.toFixed(0)}% of the road to ${target}</div>
-      </div>
-    </div>`;
-}
-
-// ---------- render -------------------------------------------------------
-function render(D){
-  // Use the viewer's current time (not the frozen fetch time) for elapsed-time
-  // math, so the "Last build" staleness column, the coach pace, and the trajectory
-  // "today" marker keep moving forward on their own even when no new system has
-  // shipped. The counts stay as of the last data sync; only elapsed time advances.
-  const now = new Date();
-  const goal = D.goal, total = D.reported_total, remaining = goal - total;
-  const github = D.github_total;
-  G = { dated: (D.systems || []).map(s => s.date).sort(), now, goal, total, analyticsStart: ymd(D.analytics_start), hours: D.hours || null };
-
-  // Header shows the last data-sync date (frozen), rendered in Central time.
-  document.getElementById("updated").innerHTML =
-    "Updated <b>" + new Date(D.generated_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: CST_TZ }) + "</b>";
-
-  const eoy = ymd(D.goal_targets.end_of_year);
-  const two = ymd(D.goal_targets.two_year);
-  const traj = trajectory(D, now);
-  const repoHtml = repoTable(D, now);
-
-  root.innerHTML = `
-    <div class="grid2" style="margin-bottom:18px">
-      <div class="card coach">
-        <h2>This week's session</h2>
-        ${coachSection(D, now)}
-      </div>
-      <div class="card">
-        <h2>The goal</h2>
-        <div class="goalnum"><span class="big">${fmt(total)}</span><span class="of">of ${fmt(goal)} systems</span></div>
-        <div class="togo"><b>${fmt(remaining)}</b> to go &middot; ${pct(total,goal).toFixed(1)}% there</div>
-        <div class="pbar-wrap">
-          <div class="pbar"><div class="fill" style="width:${pct(total,goal)}%"></div></div>
-          <div class="ticks"><span style="left:25%">250</span><span style="left:50%">500</span><span style="left:75%">750</span><span style="left:100%">1,000</span></div>
-        </div>
-        <div class="split">Counted since NextWork began, <b>${monthYear(ymd(D.analytics_start))}</b>. <b>${fmt(D.totals.top10)}</b> built across the ten lenses, <b>${fmt(D.catalog_total)}</b> in the NextWork catalog. Aiming for a floor of <b>${D.target_weekly} a week</b>, building toward <b>${D.stretch_weekly}</b>.</div>
-      </div>
-    </div>
-
-    ${D.hours ? `<div class="tiles" style="margin-bottom:18px">
-      ${bubble("Project generator hours", D.hours.generator_total + "<small> h</small>", `the ten repos &middot; ${D.hours.generator_logged_count} of ${D.hours.generator_projects} logged, rest estimated`)}
-      ${bubble("Full total, incl. catalog", D.hours.full_total + "<small> h</small>", `all ${D.hours.projects} projects &middot; adds the ${D.hours.catalog_projects} NextWork catalog`)}
-      ${bubble("Hours per project", D.hours.avg + "<small> h</small>", "average logged build time")}
-    </div>` : ""}
-
-    ${masterySection(D, now)}
-
-    <div class="card">
-      <h2>Systems published over time</h2>
-      <div class="card-note">Counts of completed systems, by the date each first landed on GitHub. These are project counts, not hours (hours are in the cards above and the repo table). Pick a range to see the rate.</div>
-      <div class="tabs" id="tabs">
-        <button class="tab" data-range="daily">Daily</button>
-        <button class="tab active" data-range="weekly">Weekly</button>
-        <button class="tab" data-range="monthly">Monthly</button>
-        <button class="tab" data-range="yearly">Yearly</button>
-        <button class="tab" data-range="all">All-time</button>
-      </div>
-      <div class="tiles" id="tabtiles">${tabTiles("weekly")}</div>
-    </div>
-
-    <div class="section-label">Trajectory: where you are vs where you need to be</div>
-    <div class="card">
-      <div class="tiles" style="margin-bottom:18px">${traj.tiles}</div>
-      ${traj.chart}
-      <div class="takeaway">${traj.takeaway}</div>
-    </div>
-
-    <div class="section-label">The groups</div>
-    <div class="card">
-      <h2>The ten lenses vs the NextWork catalog</h2>
-      ${comparison(D, now)}
-    </div>
-
-    <div class="section-label">The ten repos</div>
-    <div class="card">
-      <h2>Each lens, a run to 100 systems</h2>
-      <div class="card-note">Grouped into Engineering and Delivery, with the mastery role each lens represents. <b>${fmt(D.totals.top10)}</b> of 1,000 published across the ten so far${D.hours ? `, totaling <b>${D.hours.generator_total} h</b> of build time` : ""}. "Hours" is the build time per repo (hover it for the per-project breakdown); "Last build" shows what has gone quiet.</div>
-      ${repoHtml}
-    </div>
-
-    ${buildAndBrewSection(D)}
-
-    ${masteryTracksSection(D)}
-  `;
-
-  // wire up the time tabs
-  document.querySelectorAll("#tabs .tab").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll("#tabs .tab").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      document.getElementById("tabtiles").innerHTML = tabTiles(btn.dataset.range);
+  /* ---------------- tabs ---------------- */
+  var active = 0;
+  function renderTabs() {
+    $("#tabs").innerHTML = TRACKS.map(function (t, i) {
+      return '<button class="tab" role="tab" id="tab-' + t.id + '" aria-controls="panel" type="button" ' +
+        'aria-selected="' + (i === active) + '" style="color:' + (i === active ? cssv(t.cvar) : "") + '" data-i="' + i + '">' +
+        '<span class="dot" style="background:' + cssv(t.cvar) + '"></span>' + esc(t.label) +
+        '<span class="ct">' + n(t.count) + '</span></button>';
+    }).join("");
+    var btns = $("#tabs").querySelectorAll(".tab");
+    btns.forEach(function (b) {
+      b.addEventListener("click", function () { active = +b.dataset.i; render(); });
+      b.addEventListener("keydown", function (e) {
+        var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        active = (active + d + TRACKS.length) % TRACKS.length;
+        render();
+        $("#tabs").querySelectorAll(".tab")[active].focus();
+      });
     });
-  });
+    /* one ink bar that slides between tabs, rather than a hard border swap */
+    var ink = document.createElement("span");
+    ink.className = "tabink"; ink.id = "tabink";
+    $("#tabs").appendChild(ink);
+    moveInk();
+  }
+  function moveInk() {
+    var ink = document.getElementById("tabink");
+    var btn = $("#tabs").querySelectorAll(".tab")[active];
+    if (!ink || !btn) return;
+    ink.style.width = btn.offsetWidth + "px";
+    ink.style.transform = "translateX(" + btn.offsetLeft + "px)";
+    ink.style.background = cssv(TRACKS[active].cvar);
+  }
 
-}
+  function render() {
+    var st = D.generated_at ? new Date(D.generated_at) : null;
+    $("#stamp").textContent = st ? ("Updated " + st.toLocaleDateString("en-US",
+      { month: "long", day: "numeric", year: "numeric" })) : "";
+    renderHero();
+    renderActivity();
+    renderTotals();
+    renderTabs();
+    var p = $("#panel");
+    p.innerHTML = '<div class="panel" role="tabpanel" aria-labelledby="tab-' + TRACKS[active].id + '">' +
+      panelFor(TRACKS[active]) + '</div>';
+    p.querySelectorAll(".block").forEach(function (b) { b.classList.add("slab", "slab-lift"); });
+    $("#hero").classList.add("slab");
+    p.querySelectorAll("[data-goto]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var i = TRACKS.findIndex(function (x) { return x.id === b.dataset.goto; });
+        if (i >= 0) { active = i; render(); }
+      });
+    });
+    wireBars(p);
+    wireHeat(p);
+    stagger(p);
+    runCounters(p);
+    growFills(p);
+  }
 
-if (!D) {
-  root.innerHTML = '<div class="card"><h2>No data yet</h2><div class="empty">'
-    + 'Run <code>python dashboard/fetch_data.py</code> to load the portfolio from GitHub, then reload.</div></div>';
-} else {
-  render(D);
-}
+
+  /* ---------------- atmosphere ---------------- */
+  function buildScene() {
+    var sc = document.getElementById("scene"); if (!sc) return;
+    var seed = 20260812, rnd = function () {         // deterministic, so it never reflows differently
+      seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296;
+    };
+    /* --- light: a single sakura branch, sumi-e, plus a few drifting petals --- */
+    var petal = function (x, y, s2, r, d, dur) {
+      return '<g class="petal" style="animation-duration:' + dur + 's;animation-delay:-' + d + 's" ' +
+        'transform="translate(' + x + ',' + y + ') scale(' + s2 + ') rotate(' + r + ')">' +
+        '<path d="M0 0 C 5 -6 12 -6 15 0 C 12 7 5 8 0 0 Z" fill="currentColor"/></g>';
+    };
+    var blossom = function (x, y, s2) {
+      var g = '<g transform="translate(' + x + ',' + y + ') scale(' + s2 + ')">';
+      for (var i = 0; i < 5; i++) {
+        g += '<path d="M0 0 C 4.5 -5.5 11 -5.5 14 0 C 11 6.5 4.5 7.5 0 0 Z" fill="currentColor" ' +
+             'transform="rotate(' + (i * 72) + ')" opacity="0.85"/>';
+      }
+      return g + '<circle r="1.9" fill="currentColor" opacity="0.5"/></g>';
+    };
+    var branch =
+      '<path d="M812 6 C 742 34 690 62 628 96 C 566 130 512 160 452 176" stroke="currentColor" ' +
+        'stroke-width="7" fill="none" stroke-linecap="round"/>' +
+      '<path d="M628 96 C 606 132 590 156 556 186" stroke="currentColor" stroke-width="3.4" fill="none" stroke-linecap="round"/>' +
+      '<path d="M700 60 C 690 96 684 118 664 146" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round"/>' +
+      '<path d="M528 152 C 508 168 492 176 466 182" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/>' +
+      blossom(452, 176, 1.15) + blossom(556, 186, 1.0) + blossom(664, 146, 0.9) +
+      blossom(600, 118, 0.8) + blossom(742, 34, 0.95) + blossom(500, 168, 0.7) +
+      /* second, lower branch sweeping the other way */
+      '<path d="M40 292 C 118 268 186 246 262 232 C 318 221 366 216 410 214" stroke="currentColor" ' +
+        'stroke-width="5.5" fill="none" stroke-linecap="round"/>' +
+      '<path d="M262 232 C 268 258 272 272 288 292" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round"/>' +
+      '<path d="M150 258 C 140 276 134 284 120 296" stroke="currentColor" stroke-width="2.1" fill="none" stroke-linecap="round"/>' +
+      blossom(410, 214, 1.05) + blossom(288, 292, 0.85) + blossom(120, 296, 0.75) +
+      blossom(196, 243, 0.7) + blossom(40, 292, 0.9);
+    var petals = "";
+    for (var i = 0; i < 16; i++) {
+      petals += petal(120 + rnd() * 640, -20 - rnd() * 60, 0.7 + rnd() * 0.6,
+                      rnd() * 360, rnd() * 26, 22 + rnd() * 20);
+    }
+    var sakura = '<svg class="sakura" viewBox="0 0 840 320" fill="none" style="color:var(--text)">' +
+      branch + petals + '</svg>';
+
+    /* --- dark: a sparse star field, thin wind, and Fuji low on the horizon --- */
+    var stars = "";
+    for (var j = 0; j < 130; j++) {
+      var sx = rnd() * 100, sy = rnd() * 100, r2 = 0.5 + rnd() * 1.15;
+      stars += '<circle cx="' + sx.toFixed(2) + '%" cy="' + sy.toFixed(2) + '%" r="' + r2.toFixed(2) + '" ' +
+        'fill="#ffffff" class="twinkle" style="animation-duration:' + (2.4 + rnd() * 4.5).toFixed(1) +
+        's;animation-delay:-' + (rnd() * 5).toFixed(1) + 's"/>';
+    }
+    var shoot = "";
+    for (var q = 0; q < 2; q++) {
+      shoot += '<line class="shoot" x1="0" y1="0" x2="46" y2="17" stroke="#ffffff" stroke-width="1.2" ' +
+        'stroke-linecap="round" style="animation-duration:' + (11 + q * 7) + 's;animation-delay:-' + (q * 6) + 's"/>';
+    }
+    var starSvg = '<svg class="stars" preserveAspectRatio="none">' + stars + shoot + '</svg>';
+
+    var wind = "";
+    for (var k = 0; k < 4; k++) {
+      var wy = 120 + k * 46 + rnd() * 22;
+      wind += '<path class="drift" style="animation-duration:' + (26 + k * 7) + 's" d="M' + (120 + k * 90) +
+        ' ' + wy + ' q 150 -16 300 0 q 150 16 300 0" stroke="#ffffff" stroke-width="1.1" fill="none" ' +
+        'opacity="' + (0.09 - k * 0.012).toFixed(3) + '" stroke-linecap="round"/>';
+    }
+    var fuji = '<svg class="fuji" viewBox="0 0 1600 420" fill="none">' +
+      '<defs><linearGradient id="fg" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#7d8894" stop-opacity="0.30"/>' +
+        '<stop offset="0.55" stop-color="#3a4149" stop-opacity="0.20"/>' +
+        '<stop offset="1" stop-color="#22262a" stop-opacity="0.06"/>' +
+      '</linearGradient></defs>' + wind +
+      '<path d="M120 420 C 430 420 566 268 706 140 C 738 111 754 100 772 100 C 790 100 806 111 838 140 ' +
+        'C 978 268 1114 420 1424 420 Z" fill="url(#fg)"/>' +
+      '<path d="M706 140 C 738 111 754 100 772 100 C 790 100 806 111 838 140 ' +
+        'C 826 150 814 142 800 150 C 786 158 776 146 762 152 C 748 158 736 148 722 152 Z" ' +
+        'fill="#e8edf2" opacity="0.16"/>' +
+      '</svg>';
+    sc.innerHTML = sakura + starSvg + fuji;
+  }
+  buildScene();
+
+  /* ---------------- parallax ---------------- */
+  (function () {
+    if (REDUCED) return;
+    var ticking = false;
+    function apply() {
+      document.documentElement.style.setProperty("--par", String(window.scrollY));
+      ticking = false;
+    }
+    window.addEventListener("scroll", function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(apply); }
+    }, { passive: true });
+    apply();
+  })();
+
+
+  render();
+  window.addEventListener("resize", function () { hideTip(); moveInk(); });
+})();
 </script>
 </body>
 </html>
