@@ -30,7 +30,7 @@
     --del:  #2f5fa8;   /* ai indigo */
     --mas:  #b8482a;   /* kaki persimmon */
     --bnb:  #00897b;   /* seiheki teal */
-    --foc:  #c2185b;   /* beni, the practice log */
+    --foc:  #7e3ff2;   /* fuji violet, the practice log */
     --act:  #a8791a;   /* kincha gold, all-track activity */
 
     --good:  #3f7a34;
@@ -61,7 +61,7 @@
       --text-2:    #b4ada0;
       --muted:     #8b8478;
       --grid:      rgba(255,255,255,0.075);
-      --eng: #729c3d; --nwk: #b478cf; --del: #5f92d8; --mas: #d66b4a; --bnb: #22ab9a; --foc: #e8336b; --act: #c99a30;
+      --eng: #729c3d; --nwk: #b478cf; --del: #5f92d8; --mas: #d66b4a; --bnb: #22ab9a; --foc: #7c4dff; --act: #c99a30;
       --good: #7bb46a;
       --shadow: 0 1px 2px rgba(0,0,0,0.35), 0 14px 30px -20px rgba(0,0,0,0.75);
       --tex-op: 0.52; --tex-blend: soft-light;
@@ -80,7 +80,7 @@
     --text-2:    #b4ada0;
     --muted:     #8b8478;
     --grid:      rgba(255,255,255,0.075);
-    --eng: #729c3d; --nwk: #b478cf; --del: #5f92d8; --mas: #d66b4a; --bnb: #22ab9a; --foc: #e8336b; --act: #c99a30;
+    --eng: #729c3d; --nwk: #b478cf; --del: #5f92d8; --mas: #d66b4a; --bnb: #22ab9a; --foc: #7c4dff; --act: #c99a30;
     --good: #7bb46a;
     --shadow: 0 1px 2px rgba(0,0,0,0.35), 0 14px 30px -20px rgba(0,0,0,0.75);
     --tex-op: 0.52; --tex-blend: soft-light;
@@ -1847,12 +1847,12 @@ window.DASHBOARD_DATA = {
     { id: "dojo", short: "A free weekly cohort I lead. One real project built live with the room each week.", label: "Build & Brew", cvar: "--bnb", count: bnbShipped, counts: true, target: (bnb.target || PER_LENS),
       blurb: "The free weekly NextWork live cohort. One real AI project built together each week, in the open, finished or not.",
       repos: [] },
+    { id: "practice", short: "A daily AI tooling practice. Does a new capability earn a place in how I actually work?", label: "Fresh Off the Crown", cvar: "--foc", count: focShipped, counts: true, target: null,
+      blurb: "A decision log with a build attached. Every entry answers one question about one capability, and the build exists to make the answer honest. There is no target here on purpose: a practice with a quota is a practice with a fabrication problem, so this track is measured by recency and honesty rather than by progress toward a number.",
+      repos: [] },
     { id: "nextwork", short: "The verified NextWork curriculum, worked end to end across cloud, AI, security, and data.", label: "NextWork", cvar: "--nwk", count: catalogTotal, counts: true, target: (D.repo_target || PER_LENS),
       blurb: "The verified NextWork curriculum, built end to end across cloud, AI, security, data, and platform. Separate from my original lenses: this is a published catalog I worked through, not work I authored.",
       repos: cross },
-    { id: "practice", short: "A daily AI tooling practice. Does a new capability earn a place in how I actually work?", label: "Fresh Off the Crown", cvar: "--foc", count: focShipped, counts: true, target: null,
-      blurb: "A decision log with a build attached. Every entry answers one question about one capability, and the build exists to make the answer honest. There is no target here on purpose: a practice with a quota is a practice with a fabrication problem, so this track is measured by recency and honesty rather than by progress toward a number.",
-      repos: [] }
   ]; /* cumulative publish timeline from every repo's date list */
   var allDates = [];
   repos.forEach(function (r) { (r.dates || []).forEach(function (d) { allDates.push(d); }); });
